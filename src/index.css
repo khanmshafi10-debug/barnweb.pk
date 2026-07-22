@@ -1,0 +1,55 @@
+@import "tailwindcss";
+
+@theme {
+  --font-serif: "Fraunces", Georgia, serif;
+  --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+
+  --color-slate-green: #4A5D50;
+  --color-honey-gold: #C9962F;
+  --color-slate-blue: #45566B;
+  --color-honey-blue: #B08D57;
+  --color-ivory: #FAF8F4;
+  --color-charcoal: #2B2E2C;
+}
+
+@layer base {
+  body {
+    font-family: var(--font-sans);
+    background-color: #FAF8F4;
+    color: #2B2E2C;
+  }
+
+  h1, h2, h3, h4, .font-serif {
+    font-family: var(--font-serif);
+  }
+}
+
+/* Barn pitched-roof motif line & subtle clip helpers */
+.barn-roof-top {
+  clip-path: polygon(0 16px, 50% 0, 100% 16px, 100% 100%, 0 100%);
+}
+
+.barn-roof-peak-border {
+  position: relative;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom subtle scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #FAF8F4;
+}
+::-webkit-scrollbar-thumb {
+  background: #4A5D50 / 0.3;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #4A5D50;
+}
+

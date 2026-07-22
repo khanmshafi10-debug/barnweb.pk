@@ -1,0 +1,6 @@
+{
+  "name": "Barn.pk",
+  "description": "A boutique, trustworthy, farm-rooted health, wellness, and natural food products brand.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
