@@ -25,10 +25,10 @@ export const SectionBlock: React.FC<SectionBlockProps> = ({ type, reversed = fal
         ],
         ctaText: 'Shop Nature Range',
         ctaPath: '/shop?category=grown',
-        buttonVariant: 'primary-grown' as const,
-        bgClass: 'bg-[#4A5D50]/5 border-y border-[#4A5D50]/15',
+        buttonVariant: 'gold' as const,
+        bgClass: 'bg-gradient-to-br from-[#27382B] via-[#2B3C2F] to-[#1E2B21] text-white border-y border-[#C9962F]/30',
         themeAccent: 'text-[#C9962F]',
-        badgeBg: 'bg-[#4A5D50] text-[#FAF8F4]',
+        badgeBg: 'bg-[#C9962F] text-white',
         image: 'https://images.unsplash.com/photo-1587049352847-4a222e784d38?auto=format&fit=crop&q=80&w=900',
         imageAlt: 'Barn.pk Raw Sidr Honey Harvesting',
         icon: <Sprout className="w-5 h-5 text-[#C9962F]" />
@@ -44,13 +44,13 @@ export const SectionBlock: React.FC<SectionBlockProps> = ({ type, reversed = fal
         ],
         ctaText: 'Explore Wellness Line',
         ctaPath: '/shop?category=restored',
-        buttonVariant: 'primary-restored' as const,
-        bgClass: 'bg-[#45566B]/5 border-y border-[#45566B]/15',
-        themeAccent: 'text-[#B08D57]',
-        badgeBg: 'bg-[#45566B] text-[#FAF8F4]',
+        buttonVariant: 'gold' as const,
+        bgClass: 'bg-gradient-to-br from-[#271E56] via-[#483D8B] to-[#1B1440] text-white border-y border-[#483D8B]/40',
+        themeAccent: 'text-[#8A7BE0]',
+        badgeBg: 'bg-[#483D8B] text-white',
         image: 'https://images.unsplash.com/photo-1617897903246-719242758050?auto=format&fit=crop&q=80&w=900',
         imageAlt: 'Barn.pk High-Altitude Shilajit Resin',
-        icon: <Sparkles className="w-5 h-5 text-[#B08D57]" />
+        icon: <Sparkles className="w-5 h-5 text-[#C9962F]" />
       };
 
   return (
@@ -60,24 +60,24 @@ export const SectionBlock: React.FC<SectionBlockProps> = ({ type, reversed = fal
           
           {/* Text Content Column */}
           <div className={`lg:col-span-6 space-y-6 ${reversed ? 'lg:order-2' : 'lg:order-1'}`}>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/80 border border-current/10 text-xs font-semibold uppercase tracking-wider text-[#2B2E2C]">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/20 text-xs font-semibold uppercase tracking-wider text-white backdrop-blur-md">
               {content.icon}
               <span>{content.tag}</span>
             </div>
 
-            <h2 className="font-serif text-2xl sm:text-4xl font-bold text-[#2B2E2C] leading-tight">
+            <h2 className="font-serif text-2xl sm:text-4xl font-bold text-white leading-tight">
               {content.title}
             </h2>
 
-            <p className="text-sm sm:text-base text-[#2B2E2C]/80 leading-relaxed">
+            <p className="text-sm sm:text-base text-white/90 leading-relaxed">
               {content.description}
             </p>
 
             {/* Checklist Highlights */}
             <ul className="space-y-3 pt-2">
               {content.highlights.map((point, idx) => (
-                <li key={idx} className="flex items-start gap-3 text-xs sm:text-sm text-[#2B2E2C]">
-                  <CheckCircle2 className={`w-5 h-5 ${content.themeAccent} shrink-0 mt-0.5`} />
+                <li key={idx} className="flex items-start gap-3 text-xs sm:text-sm text-white/95">
+                  <CheckCircle2 className="w-5 h-5 text-[#C9962F] shrink-0 mt-0.5" />
                   <span>{point}</span>
                 </li>
               ))}
@@ -98,7 +98,7 @@ export const SectionBlock: React.FC<SectionBlockProps> = ({ type, reversed = fal
 
           {/* Image Block Column */}
           <div className={`lg:col-span-6 ${reversed ? 'lg:order-1' : 'lg:order-2'}`}>
-            <div className="relative rounded-2xl overflow-hidden shadow-xl border-4 border-[#FAF8F4] group">
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-white/20 group">
               <ImageWithFallback
                 src={content.image}
                 alt={content.imageAlt}
@@ -108,12 +108,12 @@ export const SectionBlock: React.FC<SectionBlockProps> = ({ type, reversed = fal
               />
               
               {/* Roof Line Motif Top Edge */}
-              <div className="absolute top-0 left-0 right-0 p-3 bg-gradient-to-b from-black/60 to-transparent flex justify-between items-center text-white text-xs font-medium z-10">
+              <div className="absolute top-0 left-0 right-0 p-3 bg-gradient-to-b from-black/70 to-transparent flex justify-between items-center text-white text-xs font-medium z-10">
                 <span className="flex items-center gap-1.5">
-                  <BarnRoofMotif color="#FAF8F4" height={10} />
+                  <BarnRoofMotif color="#C9962F" height={10} />
                   Barn.pk Sourcing Verified
                 </span>
-                <span className="text-[10px] uppercase tracking-widest bg-white/20 backdrop-blur-md px-2 py-0.5 rounded">
+                <span className="text-[10px] font-bold uppercase tracking-widest bg-[#C9962F] text-white px-2.5 py-0.5 rounded shadow-xs">
                   Traceable Origin
                 </span>
               </div>
@@ -125,4 +125,3 @@ export const SectionBlock: React.FC<SectionBlockProps> = ({ type, reversed = fal
     </section>
   );
 };
-

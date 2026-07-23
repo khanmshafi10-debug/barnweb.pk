@@ -1,19 +1,22 @@
-export type ProductCategory = 'grown' | 'restored' | 'skincare' | 'oils' | 'teas' | 'bundles'; 
-// grown = Nature/Foods, restored = Minerals/Supplements, skincare = Botanical Care, oils = Cold-Pressed Oils, teas = Organic Teas, bundles = Value Kits
+export type ProductCategory = 'grown' | 'restored' | 'skincare' | 'oils' | 'teas' | 'bundles' | 'supplements' | 'spices' | 'pickles' | 'nuts'; 
+// grown = Nature/Foods, restored = Minerals/Supplements, skincare = Botanical Care, oils = Cold-Pressed Oils, teas = Organic Teas, bundles = Value Kits, supplements = Organic Supplements, spices = Farm Spices, pickles = Desi Pickles, nuts = Dry Fruits
 
 export interface Product {
   id: string;
   name: string;
   subtitle: string;
   category: ProductCategory; 
-  categoryName: string; // e.g. "Grown • Pure Foods", "Restored • Botanical Health", "Cold-Pressed Oils"
-  subcategory?: string; // e.g. "Honey", "Shilajit", "Hair Oil", "Facial Care", "Tea"
+  categoryName: string;
+  subcategory?: string;
+  subcategoryId?: string;
   price: number;
   originalPrice?: number;
   rating: number;
   reviewCount: number;
   image: string;
   badge?: string;
+  certification?: string;
+  isCertified?: boolean;
   description: string;
   origin: string;
   volumeOrWeight: string;
@@ -22,7 +25,7 @@ export interface Product {
   howToUse: string;
   isBestseller?: boolean;
   isNewArrival?: boolean;
-  concerns?: string[]; // e.g. ['Hair Fall', 'Acne', 'Immunity', 'Stress', 'Fatigue', 'Glowing Skin']
+  concerns?: string[];
 }
 
 export interface CartItem {
@@ -103,4 +106,3 @@ export interface QuizQuestion {
     description: string;
   }[];
 }
-

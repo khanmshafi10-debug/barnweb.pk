@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { PRODUCTS } from '../data/products';
 import { Product } from '../types';
-import { Search, X, Sparkles, ArrowRight, ShoppingBag, ShieldCheck } from 'lucide-react';
+import { Search, X, Sparkles, ArrowRight, ShoppingBag } from 'lucide-react';
 import { ImageWithFallback } from './ImageWithFallback';
+import { useCurrency } from '../context/CurrencyContext';
 
 interface SearchModalProps {
   isOpen: boolean;
@@ -20,6 +21,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({
 }) => {
   const [query, setQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const { formatPrice } = useCurrency();
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -65,7 +67,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({
   const POPULAR_TAGS = ['Sidr Honey', 'Shilajit', 'Rosemary Oil', 'Saffron Mask', 'A2 Ghee', 'Rose Water', 'Hair Fall', 'Immunity'];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center pt-12 sm:pt-20 px-4 bg-black/60 backdrop-blur-sm animate-fade-in">
+    <div className="fixed inset-0 z-50 flex items-start justify-center pt-10 sm:pt-20 px-3 sm:px-4 bg-black/60 backdrop-blur-xs animate-fade-in">
       {/* Backdrop click */}
       <div className="absolute inset-0" onClick={onClose} />
 
@@ -73,7 +75,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({
         
         {/* Search Header Input */}
         <div className="p-4 sm:p-5 border-b border-[#4A5D50]/15 flex items-center gap-3 bg-white">
-          <Search className="w-5 h-5 text-[#4A5D50]" />
+          <Search className="w-5 h-5 text-[#4A5D50] shrink-0" />
           <input
             type="text"
             value={query}
@@ -85,22 +87,24 @@ export const SearchModal: React.FC<SearchModalProps> = ({
           {query && (
             <button
               onClick={() => setQuery('')}
-              className="text-[#2B2E2C]/50 hover:text-[#2B2E2C] text-xs font-bold px-2 py-1 bg-black/5 rounded-md"
+              className="text-[#2B2E2C]/50 hover:text-[#2B2E2C] text-xs font-bold px-2 py-1 bg-black/5 rounded-md shrink-0"
             >
               Clear
             </button>
           )}
           <button
             onClick={onClose}
-            className="p-1.5 rounded-full hover:bg-black/5 text-[#2B2E2C]/70"
+            className="p-1.5 rounded-full hover:bg-black/5 text-[#2B2E2C]/70 shrink-0"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        {/* Category Pill Filters */}
-        <div className="px-4 py-3 bg-[#FAF8F4] border-b border-[#4A5D50]/10 flex items-center gap-2 overflow-x-auto text-xs">
-          <span className="font-bold text-[#2B2E2C]/60 shrink-0">Filter:</span>
+        {/* Clean Category Pill Filters Row (No scrollbar line merge) */}
+        <div className="px-4 py-3 bg-[#FAF8F4] border-b border-[#4A5D50]/15 flex items-center gap-2 overflow-x-auto no-scrollbar text-xs relative z-10">
+          <span className="font-bold text-[#4A5D50] shrink-0 uppercase tracking-wider text-[11px] mr-1">
+            Filter:
+          </span>
           {[
             { id: 'all', label: 'All Products' },
             { id: 'grown', label: 'Nature & Foods' },
@@ -109,33 +113,36 @@ export const SearchModal: React.FC<SearchModalProps> = ({
             { id: 'skincare', label: 'Botanical Skincare' },
             { id: 'teas', label: 'Organic Teas' },
             { id: 'bundles', label: 'Value Bundles' }
-          ].map((cat) => (
-            <button
-              key={cat.id}
-              onClick={() => setSelectedCategory(cat.id)}
-              className={`px-3 py-1 rounded-full whitespace-nowrap transition-all font-semibold ${
-                selectedCategory === cat.id
-                  ? 'bg-[#4A5D50] text-[#FAF8F4]'
-                  : 'bg-white text-[#2B2E2C]/70 border border-[#4A5D50]/15 hover:border-[#4A5D50]'
-              }`}
-            >
-              {cat.label}
-            </button>
-          ))}
+          ].map((cat) => {
+            const isSelected = selectedCategory === cat.id;
+            return (
+              <button
+                key={cat.id}
+                onClick={() => setSelectedCategory(cat.id)}
+                className={`px-3.5 py-1.5 rounded-full whitespace-nowrap transition-all font-semibold shrink-0 cursor-pointer ${
+                  isSelected
+                    ? 'bg-[#4A5D50] text-[#FAF8F4] shadow-sm border border-[#4A5D50]'
+                    : 'bg-white text-[#2B2E2C]/80 border border-[#4A5D50]/20 hover:border-[#4A5D50] hover:bg-[#4A5D50]/5'
+                }`}
+              >
+                {cat.label}
+              </button>
+            );
+          })}
         </div>
 
-        {/* Quick Suggestion Tags if query empty */}
+        {/* Quick Suggestion Tags */}
         {!query && (
-          <div className="px-5 py-3 bg-white/50 border-b border-[#4A5D50]/10 text-xs flex items-center gap-2 flex-wrap">
+          <div className="px-4 sm:px-5 py-3 bg-white/70 border-b border-[#4A5D50]/10 text-xs flex items-center gap-2 flex-wrap">
             <span className="text-[#C9962F] font-bold flex items-center gap-1 shrink-0">
-              <Sparkles className="w-3 h-3" />
+              <Sparkles className="w-3.5 h-3.5" />
               Popular Searches:
             </span>
             {POPULAR_TAGS.map((tag) => (
               <button
                 key={tag}
                 onClick={() => setQuery(tag)}
-                className="px-2.5 py-1 bg-white border border-[#4A5D50]/10 rounded-md text-[#2B2E2C]/80 hover:text-[#4A5D50] hover:border-[#4A5D50] transition-colors"
+                className="px-2.5 py-1 bg-white border border-[#4A5D50]/15 rounded-lg text-[#2B2E2C]/80 hover:text-[#4A5D50] hover:border-[#4A5D50] transition-colors font-medium text-[11px]"
               >
                 {tag}
               </button>
@@ -163,7 +170,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({
                     onClose();
                   }}
                 >
-                  <div className="w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-[#4A5D50]/10">
+                  <div className="w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-[#4A5D50]/10 bg-white">
                     <ImageWithFallback
                       src={product.image}
                       alt={product.name}
@@ -173,7 +180,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({
                     />
                   </div>
                   <div className="min-w-0">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#C9962F]">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#C9962F] block">
                       {product.categoryName}
                     </span>
                     <h4 className="font-serif text-sm font-bold text-[#2B2E2C] group-hover:text-[#4A5D50] transition-colors truncate">
@@ -185,12 +192,12 @@ export const SearchModal: React.FC<SearchModalProps> = ({
 
                 <div className="flex items-center gap-3 shrink-0">
                   <div className="text-right">
-                    <span className="font-serif text-base font-bold text-[#2B2E2C]">
-                      ${product.price.toFixed(2)}
+                    <span className="font-serif text-sm sm:text-base font-bold text-[#2B2E2C]">
+                      {formatPrice(product.price)}
                     </span>
                     {product.originalPrice && (
-                      <span className="text-xs text-[#2B2E2C]/50 line-through block">
-                        ${product.originalPrice.toFixed(2)}
+                      <span className="text-[11px] text-[#2B2E2C]/50 line-through block">
+                        {formatPrice(product.originalPrice)}
                       </span>
                     )}
                   </div>
@@ -211,7 +218,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({
         </div>
 
         {/* Footer */}
-        <div className="p-3 bg-[#FAF8F4] border-t border-[#4A5D50]/15 text-center text-xs text-[#2B2E2C]/60 flex items-center justify-between px-5">
+        <div className="p-3.5 bg-[#FAF8F4] border-t border-[#4A5D50]/15 text-center text-xs text-[#2B2E2C]/60 flex items-center justify-between px-5">
           <span>Showing <strong>{filteredProducts.length}</strong> natural products</span>
           <Link
             to="/shop"

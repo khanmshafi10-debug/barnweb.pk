@@ -6,12 +6,13 @@ import { BenefitsGrid } from '../components/BenefitsGrid';
 import { TestimonialsSection } from '../components/TestimonialsSection';
 import { FAQAccordion } from '../components/FAQAccordion';
 import { BundleBuilder } from '../components/BundleBuilder';
+import { ChiltanCategoryGrid } from '../components/ChiltanCategoryGrid';
 import { PRODUCTS } from '../data/products';
 import { Product } from '../types';
 import { Link } from 'react-router-dom';
 import { Button } from '../components/Button';
 import { BarnRoofMotif } from '../components/BarnRoofMotif';
-import { ArrowRight, Sparkles, MapPin, ShieldCheck, Award, Gift } from 'lucide-react';
+import { ArrowRight, Sparkles, ShieldCheck, Award, Leaf } from 'lucide-react';
 
 interface HomeProps {
   onAddToCart: (product: Product) => void;
@@ -29,12 +30,12 @@ export const Home: React.FC<HomeProps> = ({
   const bestsellers = PRODUCTS.filter((p) => p.isBestseller).slice(0, 4);
 
   return (
-    <div className="space-y-0">
-      {/* Hero Section */}
+    <div className="space-y-0 bg-[#FAF8F4]">
+      {/* 1. Hero Section with Farm Photography & Dark Slate Gradient */}
       <Hero />
 
-      {/* Intro Motto Bar */}
-      <section className="bg-[#2B2E2C] text-[#FAF8F4] py-8 border-y border-[#C9962F]/30">
+      {/* 2. Intro Motto Bar (Dark Slate Green) */}
+      <section className="bg-[#223126] text-[#FAF8F4] py-8 border-y border-[#C9962F]/30 shadow-inner">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-2">
           <BarnRoofMotif color="#C9962F" height={14} className="mx-auto" />
           <p className="font-serif text-lg sm:text-2xl font-medium tracking-wide max-w-3xl mx-auto italic">
@@ -48,30 +49,33 @@ export const Home: React.FC<HomeProps> = ({
         </div>
       </section>
 
-      {/* Quick Access Feature Highlights */}
-      <section className="bg-white py-8 border-b border-[#4A5D50]/10 shadow-2xs">
+      {/* 3. Chiltan Pure Category Studio Grid */}
+      <ChiltanCategoryGrid />
+
+      {/* 4. Quick Access Feature Highlights */}
+      <section className="bg-white py-10 border-b border-[#4A5D50]/10 shadow-2xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
             
-            <Link to="/quiz" className="p-4 rounded-xl bg-[#FAF8F4] hover:bg-[#4A5D50]/10 transition-colors group space-y-1">
+            <Link to="/quiz" className="p-4 rounded-xl bg-[#FAF8F4] hover:bg-[#4A5D50]/10 transition-all group space-y-1 border border-[#4A5D50]/10">
               <Sparkles className="w-5 h-5 text-[#C9962F] mx-auto group-hover:scale-110 transition-transform" />
               <strong className="font-serif text-sm font-bold text-[#2B2E2C] block">Routine Builder Quiz</strong>
               <span className="text-[11px] text-[#2B2E2C]/70 block">Find your custom remedy</span>
             </Link>
 
-            <Link to="/stores" className="p-4 rounded-xl bg-[#FAF8F4] hover:bg-[#4A5D50]/10 transition-colors group space-y-1">
-              <MapPin className="w-5 h-5 text-[#4A5D50] mx-auto group-hover:scale-110 transition-transform" />
-              <strong className="font-serif text-sm font-bold text-[#2B2E2C] block">Physical Outlets</strong>
-              <span className="text-[11px] text-[#2B2E2C]/70 block">Lahore, Isb, KHI, Pesh</span>
+            <Link to="/supplements" className="p-4 rounded-xl bg-[#FAF8F4] hover:bg-[#4A5D50]/10 transition-all group space-y-1 border border-[#4A5D50]/10">
+              <Leaf className="w-5 h-5 text-[#4A5D50] mx-auto group-hover:scale-110 transition-transform" />
+              <strong className="font-serif text-sm font-bold text-[#2B2E2C] block">Organic Supplements</strong>
+              <span className="text-[11px] text-[#2B2E2C]/70 block">Shilajit & Superfoods</span>
             </Link>
 
-            <Link to="/certifications" className="p-4 rounded-xl bg-[#FAF8F4] hover:bg-[#4A5D50]/10 transition-colors group space-y-1">
+            <Link to="/certifications" className="p-4 rounded-xl bg-[#FAF8F4] hover:bg-[#4A5D50]/10 transition-all group space-y-1 border border-[#4A5D50]/10">
               <ShieldCheck className="w-5 h-5 text-[#45566B] mx-auto group-hover:scale-110 transition-transform" />
               <strong className="font-serif text-sm font-bold text-[#2B2E2C] block">PCSIR Lab Reports</strong>
               <span className="text-[11px] text-[#2B2E2C]/70 block">100% Purity Verified</span>
             </Link>
 
-            <Link to="/rewards" className="p-4 rounded-xl bg-[#FAF8F4] hover:bg-[#4A5D50]/10 transition-colors group space-y-1">
+            <Link to="/rewards" className="p-4 rounded-xl bg-[#FAF8F4] hover:bg-[#4A5D50]/10 transition-all group space-y-1 border border-[#4A5D50]/10">
               <Award className="w-5 h-5 text-[#C9962F] mx-auto group-hover:scale-110 transition-transform" />
               <strong className="font-serif text-sm font-bold text-[#2B2E2C] block">Harvest Rewards</strong>
               <span className="text-[11px] text-[#2B2E2C]/70 block">Earn points on orders</span>
@@ -81,8 +85,8 @@ export const Home: React.FC<HomeProps> = ({
         </div>
       </section>
 
-      {/* Featured Bestsellers Grid */}
-      <section className="py-16 bg-[#FAF8F4]">
+      {/* 5. Featured Bestsellers Grid */}
+      <section className="py-16 bg-[#EEF2EF] border-b border-[#4A5D50]/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 pb-4 border-b border-[#4A5D50]/15 gap-4">
@@ -119,25 +123,31 @@ export const Home: React.FC<HomeProps> = ({
         </div>
       </section>
 
-      {/* Interactive Bundle Builder Section */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <BundleBuilder onAddToCart={onAddToCart} />
+      {/* 6. Interactive Bundle Builder Section */}
+      <section className="py-16 bg-[#FAF5EC] border-b border-[#C9962F]/20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <BundleBuilder onAddToCart={onAddToCart} />
+        </div>
       </section>
 
-      {/* "Grown" Feature Block (Green & Gold) */}
+      {/* 7. "Grown" Feature Block */}
       <SectionBlock type="grown" />
 
-      {/* "Restored" Feature Block (Blue & Honey) */}
+      {/* 8. "Restored" Feature Block */}
       <SectionBlock type="restored" reversed />
 
-      {/* Benefits Grid */}
+      {/* 9. Benefits Grid */}
       <BenefitsGrid />
 
-      {/* Testimonials */}
+      {/* 10. Testimonials Section */}
       <TestimonialsSection />
 
-      {/* FAQ Accordion */}
-      <FAQAccordion />
+      {/* 11. FAQ Accordion */}
+      <section className="bg-white py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <FAQAccordion />
+        </div>
+      </section>
 
     </div>
   );

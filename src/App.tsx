@@ -7,19 +7,27 @@ import { Footer } from './components/Footer';
 import { CartDrawer } from './components/CartDrawer';
 import { QuickViewModal } from './components/QuickViewModal';
 import { SearchModal } from './components/SearchModal';
+import { AiRemedyModal } from './components/AiRemedyModal';
+import { CheckoutModal } from './components/CheckoutModal';
 import { Home } from './pages/Home';
 import { About } from './pages/About';
 import { Shop } from './pages/Shop';
 import { ProductDetail } from './pages/ProductDetail';
 import { Journal } from './pages/Journal';
 import { Contact } from './pages/Contact';
-import { Stores } from './pages/Stores';
 import { Quiz } from './pages/Quiz';
 import { TrackOrder } from './pages/TrackOrder';
 import { Certifications } from './pages/Certifications';
 import { Rewards } from './pages/Rewards';
 import { Wholesale } from './pages/Wholesale';
 import { Wishlist } from './pages/Wishlist';
+import { CategorySupplements } from './pages/CategorySupplements';
+import { CategorySpices } from './pages/CategorySpices';
+import { CategoryPickles } from './pages/CategoryPickles';
+import { CategoryNuts } from './pages/CategoryNuts';
+import { SubcategoryDetail } from './pages/SubcategoryDetail';
+import { CurrencyProvider } from './context/CurrencyContext';
+import { ToastProvider } from './context/ToastContext';
 
 // Scroll to top helper on route navigation
 const ScrollToTop = () => {
@@ -33,11 +41,28 @@ const ScrollToTop = () => {
 };
 
 export default function App() {
-  const [cart, setCart] = useState<CartItem[]>([]);
+  const [cart, setCart] = useState<CartItem[]>(() => {
+    const saved = localStorage.getItem('barn_cart');
+    return saved ? JSON.parse(saved) : [];
+  });
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isAiOpen, setIsAiOpen] = useState(false);
+  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
-  const [wishlistIds, setWishlistIds] = useState<string[]>(['sidr-honey-1', 'shilajit-resin-1']);
+  
+  const [wishlistIds, setWishlistIds] = useState<string[]>(() => {
+    const saved = localStorage.getItem('barn_wishlist');
+    return saved ? JSON.parse(saved) : ['sidr-honey-1', 'shilajit-resin-1'];
+  });
+
+  useEffect(() => {
+    localStorage.setItem('barn_cart', JSON.stringify(cart));
+  }, [cart]);
+
+  useEffect(() => {
+    localStorage.setItem('barn_wishlist', JSON.stringify(wishlistIds));
+  }, [wishlistIds]);
 
   const handleAddToCart = (product: Product, quantityToAdd: number = 1) => {
     setCart((prevCart) => {
@@ -83,122 +108,198 @@ export default function App() {
   const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
-    <BrowserRouter>
-      <ScrollToTop />
-      <div className="min-h-screen flex flex-col bg-[#FAF8F4] text-[#2B2E2C] selection:bg-[#C9962F] selection:text-white">
-        
-        {/* Navbar */}
-        <Navbar
-          cartCount={cartCount}
-          wishlistCount={wishlistIds.length}
-          onOpenCart={() => setIsCartOpen(true)}
-          onOpenSearch={() => setIsSearchOpen(true)}
-        />
-
-        {/* Main Route Content */}
-        <main className="flex-1">
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <Home
-                  onAddToCart={(p) => handleAddToCart(p, 1)}
-                  onQuickView={(p) => setQuickViewProduct(p)}
-                  onToggleWishlist={handleToggleWishlist}
-                  wishlistIds={wishlistIds}
-                />
-              }
+    <CurrencyProvider>
+      <ToastProvider>
+        <BrowserRouter>
+          <ScrollToTop />
+          <div className="min-h-screen flex flex-col bg-[#FAF8F4] text-[#2B2E2C] selection:bg-[#C9962F] selection:text-white">
+            
+            {/* Navbar */}
+            <Navbar
+              cartCount={cartCount}
+              wishlistCount={wishlistIds.length}
+              onOpenCart={() => setIsCartOpen(true)}
+              onOpenSearch={() => setIsSearchOpen(true)}
+              onOpenAi={() => setIsAiOpen(true)}
             />
-            <Route path="/about" element={<About />} />
-            <Route
-              path="/shop"
-              element={
-                <Shop
-                  onAddToCart={(p) => handleAddToCart(p, 1)}
-                  onQuickView={(p) => setQuickViewProduct(p)}
-                  onToggleWishlist={handleToggleWishlist}
-                  wishlistIds={wishlistIds}
-                />
-              }
-            />
-            <Route
-              path="/product/:id"
-              element={
-                <ProductDetail
-                  onAddToCart={handleAddToCart}
-                  onQuickView={(p) => setQuickViewProduct(p)}
-                />
-              }
-            />
-            <Route path="/stores" element={<Stores />} />
-            <Route
-              path="/quiz"
-              element={
-                <Quiz
-                  onAddToCart={(p) => handleAddToCart(p, 1)}
-                  onQuickView={(p) => setQuickViewProduct(p)}
-                />
-              }
-            />
-            <Route path="/track-order" element={<TrackOrder />} />
-            <Route path="/certifications" element={<Certifications />} />
-            <Route path="/rewards" element={<Rewards />} />
-            <Route path="/wholesale" element={<Wholesale />} />
-            <Route
-              path="/wishlist"
-              element={
-                <Wishlist
-                  wishlistIds={wishlistIds}
-                  products={PRODUCTS}
-                  onToggleWishlist={handleToggleWishlist}
-                  onAddToCart={(p) => handleAddToCart(p, 1)}
-                  onQuickView={(p) => setQuickViewProduct(p)}
-                />
-              }
-            />
-            <Route path="/journal" element={<Journal />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route
-              path="*"
-              element={
-                <Home
-                  onAddToCart={(p) => handleAddToCart(p, 1)}
-                  onQuickView={(p) => setQuickViewProduct(p)}
-                />
-              }
-            />
-          </Routes>
-        </main>
 
-        {/* Footer */}
-        <Footer />
+            {/* Main Route Content */}
+            <main className="flex-1">
+              <Routes>
+                <Route
+                  path="/"
+                  element={
+                    <Home
+                      onAddToCart={(p) => handleAddToCart(p, 1)}
+                      onQuickView={(p) => setQuickViewProduct(p)}
+                      onToggleWishlist={handleToggleWishlist}
+                      wishlistIds={wishlistIds}
+                    />
+                  }
+                />
+                <Route path="/about" element={<About />} />
+                <Route
+                  path="/shop"
+                  element={
+                    <Shop
+                      onAddToCart={(p) => handleAddToCart(p, 1)}
+                      onQuickView={(p) => setQuickViewProduct(p)}
+                      onToggleWishlist={handleToggleWishlist}
+                      wishlistIds={wishlistIds}
+                    />
+                  }
+                />
+                <Route
+                  path="/supplements"
+                  element={
+                    <CategorySupplements
+                      onAddToCart={(p) => handleAddToCart(p, 1)}
+                      onQuickView={(p) => setQuickViewProduct(p)}
+                      onToggleWishlist={handleToggleWishlist}
+                      wishlistIds={wishlistIds}
+                    />
+                  }
+                />
+                <Route
+                  path="/spices"
+                  element={
+                    <CategorySpices
+                      onAddToCart={(p) => handleAddToCart(p, 1)}
+                      onQuickView={(p) => setQuickViewProduct(p)}
+                      onToggleWishlist={handleToggleWishlist}
+                      wishlistIds={wishlistIds}
+                    />
+                  }
+                />
+                <Route
+                  path="/pickles"
+                  element={
+                    <CategoryPickles
+                      onAddToCart={(p) => handleAddToCart(p, 1)}
+                      onQuickView={(p) => setQuickViewProduct(p)}
+                      onToggleWishlist={handleToggleWishlist}
+                      wishlistIds={wishlistIds}
+                    />
+                  }
+                />
+                <Route
+                  path="/nuts"
+                  element={
+                    <CategoryNuts
+                      onAddToCart={(p) => handleAddToCart(p, 1)}
+                      onQuickView={(p) => setQuickViewProduct(p)}
+                      onToggleWishlist={handleToggleWishlist}
+                      wishlistIds={wishlistIds}
+                    />
+                  }
+                />
+                <Route
+                  path="/sub/:subId"
+                  element={
+                    <SubcategoryDetail
+                      onAddToCart={(p) => handleAddToCart(p, 1)}
+                      onQuickView={(p) => setQuickViewProduct(p)}
+                      onToggleWishlist={handleToggleWishlist}
+                      wishlistIds={wishlistIds}
+                    />
+                  }
+                />
+                <Route
+                  path="/product/:id"
+                  element={
+                    <ProductDetail
+                      onAddToCart={handleAddToCart}
+                      onQuickView={(p) => setQuickViewProduct(p)}
+                    />
+                  }
+                />
+                <Route
+                  path="/quiz"
+                  element={
+                    <Quiz
+                      onAddToCart={(p) => handleAddToCart(p, 1)}
+                      onQuickView={(p) => setQuickViewProduct(p)}
+                    />
+                  }
+                />
+                <Route path="/track-order" element={<TrackOrder />} />
+                <Route path="/certifications" element={<Certifications />} />
+                <Route path="/rewards" element={<Rewards />} />
+                <Route path="/wholesale" element={<Wholesale />} />
+                <Route
+                  path="/wishlist"
+                  element={
+                    <Wishlist
+                      wishlistIds={wishlistIds}
+                      products={PRODUCTS}
+                      onToggleWishlist={handleToggleWishlist}
+                      onAddToCart={(p) => handleAddToCart(p, 1)}
+                      onQuickView={(p) => setQuickViewProduct(p)}
+                    />
+                  }
+                />
+                <Route path="/journal" element={<Journal />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route
+                  path="*"
+                  element={
+                    <Home
+                      onAddToCart={(p) => handleAddToCart(p, 1)}
+                      onQuickView={(p) => setQuickViewProduct(p)}
+                    />
+                  }
+                />
+              </Routes>
+            </main>
 
-        {/* Slide-over Cart Drawer */}
-        <CartDrawer
-          isOpen={isCartOpen}
-          onClose={() => setIsCartOpen(false)}
-          cart={cart}
-          onUpdateQuantity={handleUpdateQuantity}
-          onRemoveItem={handleRemoveItem}
-          onClearCart={handleClearCart}
-        />
+            {/* Footer */}
+            <Footer />
 
-        {/* Live Search Modal */}
-        <SearchModal
-          isOpen={isSearchOpen}
-          onClose={() => setIsSearchOpen(false)}
-          onAddToCart={(p) => handleAddToCart(p, 1)}
-          onQuickView={(p) => setQuickViewProduct(p)}
-        />
+            {/* Slide-over Cart Drawer */}
+            <CartDrawer
+              isOpen={isCartOpen}
+              onClose={() => setIsCartOpen(false)}
+              cart={cart}
+              onUpdateQuantity={handleUpdateQuantity}
+              onRemoveItem={handleRemoveItem}
+              onClearCart={handleClearCart}
+              onOpenCheckout={() => setIsCheckoutOpen(true)}
+            />
 
-        {/* Quick View Modal */}
-        <QuickViewModal
-          product={quickViewProduct}
-          onClose={() => setQuickViewProduct(null)}
-          onAddToCart={handleAddToCart}
-        />
+            {/* Checkout Modal */}
+            <CheckoutModal
+              isOpen={isCheckoutOpen}
+              onClose={() => setIsCheckoutOpen(false)}
+              cart={cart}
+              onClearCart={handleClearCart}
+            />
 
-      </div>
-    </BrowserRouter>
+            {/* AI Remedy Assistant Modal */}
+            <AiRemedyModal
+              isOpen={isAiOpen}
+              onClose={() => setIsAiOpen(false)}
+              onAddToCart={(p) => handleAddToCart(p, 1)}
+              onQuickView={(p) => setQuickViewProduct(p)}
+            />
+
+            {/* Live Search Modal */}
+            <SearchModal
+              isOpen={isSearchOpen}
+              onClose={() => setIsSearchOpen(false)}
+              onAddToCart={(p) => handleAddToCart(p, 1)}
+              onQuickView={(p) => setQuickViewProduct(p)}
+            />
+
+            {/* Quick View Modal */}
+            <QuickViewModal
+              product={quickViewProduct}
+              onClose={() => setQuickViewProduct(null)}
+              onAddToCart={handleAddToCart}
+            />
+
+          </div>
+        </BrowserRouter>
+      </ToastProvider>
+    </CurrencyProvider>
   );
 }

@@ -4,7 +4,8 @@ import { Product } from '../types';
 import { BarnRoofMotif } from './BarnRoofMotif';
 import { Button } from './Button';
 import { ImageWithFallback } from './ImageWithFallback';
-import { Star, ShoppingBag, Eye, ShieldCheck, Heart } from 'lucide-react';
+import { Star, ShoppingBag, Eye, Heart, ShieldCheck, CheckCircle2 } from 'lucide-react';
+import { useCurrency } from '../context/CurrencyContext';
 
 interface ProductCardProps {
   product: Product;
@@ -21,51 +22,52 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   onToggleWishlist,
   isWishlisted = false,
 }) => {
+  const { formatPrice } = useCurrency();
   const isGrown = product.category === 'grown';
 
   // Palette tokens based on line
   const theme = isGrown
     ? {
-        badgeBg: 'bg-[#4A5D50]',
-        badgeText: 'text-[#FAF8F4]',
-        accent: 'text-[#C9962F]',
+        accentColor: '#2D4233',
+        badgeBg: 'bg-[#2D4233]',
+        badgeText: 'text-[#FBF9F4]',
         buttonVariant: 'primary-grown' as const,
-        borderHover: 'hover:border-[#4A5D50]/30',
       }
     : {
-        badgeBg: 'bg-[#45566B]',
-        badgeText: 'text-[#FAF8F4]',
-        accent: 'text-[#B08D57]',
+        accentColor: '#1D2A21',
+        badgeBg: 'bg-[#1D2A21]',
+        badgeText: 'text-[#FBF9F4]',
         buttonVariant: 'primary-restored' as const,
-        borderHover: 'hover:border-[#45566B]/30',
       };
 
   return (
-    <div
-      className={`group bg-[#FAF8F4] border border-[#4A5D50]/15 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between relative ${theme.borderHover}`}
-    >
-      {/* Top Roof Silhouette Accent */}
-      <div className="absolute top-0 left-0 right-0 h-1.5 bg-[#4A5D50]/10 group-hover:bg-[#C9962F] transition-colors z-10" />
-
-      {/* Image & Badges Frame */}
-      <div className="relative aspect-4/3 overflow-hidden bg-[#2B2E2C]/5">
+    <div className="group relative bg-[#FBF9F4] rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-[#2D4233]/12 flex flex-col h-full hover:-translate-y-1">
+      {/* Image Container */}
+      <div className="relative aspect-4/3 overflow-hidden bg-[#F7F5F0]">
         <ImageWithFallback
           src={product.image}
           alt={product.name}
-          fallbackTitle={product.name}
-          category={product.category}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
         />
 
-        {/* Category Badge Top Left */}
-        <div className="absolute top-3 left-3 flex flex-col gap-1 z-10">
+        {/* Category & Certification Badges Top Left */}
+        <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-10">
           <span
             className={`px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider ${theme.badgeBg} ${theme.badgeText} shadow-sm`}
           >
             {product.categoryName || (isGrown ? 'Grown' : 'Restored')}
           </span>
+
+          {/* Certification Badge — 2 to 3 products per page featured with certification */}
+          {(product.isCertified ?? true) && (
+            <span className="px-2.5 py-1 rounded-md text-[9.5px] font-bold uppercase tracking-wider bg-[#384E3C] text-white shadow-md flex items-center gap-1 border border-white/20">
+              <ShieldCheck className="w-3.5 h-3.5 text-[#FDD229] shrink-0" />
+              <span>{product.certification || 'PCSIR Lab Certified'}</span>
+            </span>
+          )}
+
           {product.badge && (
-            <span className="px-2 py-0.5 rounded-md text-[9px] font-semibold bg-[#C9962F] text-white shadow-xs">
+            <span className="px-2 py-0.5 rounded-md text-[9px] font-semibold bg-[#FDD229] text-black shadow-xs self-start">
               {product.badge}
             </span>
           )}
@@ -78,8 +80,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               onClick={() => onToggleWishlist(product.id)}
               className={`w-8 h-8 rounded-full backdrop-blur-md flex items-center justify-center transition-all shadow-md ${
                 isWishlisted
-                  ? 'bg-[#C9962F] text-white'
-                  : 'bg-[#FAF8F4]/90 text-[#2B2E2C] hover:text-[#C9962F] hover:bg-white'
+                  ? 'bg-[#FDD229] text-black'
+                  : 'bg-[#FBFCFC]/90 text-[#2B2E2C] hover:text-[#FDD229] hover:bg-white'
               }`}
               title={isWishlisted ? 'Remove from Wishlist' : 'Add to Wishlist'}
               aria-label="Toggle Wishlist"
@@ -91,7 +93,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           {onQuickView && (
             <button
               onClick={() => onQuickView(product)}
-              className="w-8 h-8 rounded-full bg-[#FAF8F4]/90 backdrop-blur-md text-[#2B2E2C] hover:text-[#4A5D50] hover:bg-white flex items-center justify-center sm:opacity-0 sm:group-hover:opacity-100 transition-all duration-200 shadow-md"
+              className="w-8 h-8 rounded-full bg-[#FBFCFC]/90 backdrop-blur-md text-[#2B2E2C] hover:text-[#384E3C] hover:bg-white flex items-center justify-center sm:opacity-0 sm:group-hover:opacity-100 transition-all duration-200 shadow-md"
               title="Quick View"
               aria-label="Quick View product"
             >
@@ -110,13 +112,20 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       {/* Content Details */}
       <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between space-y-3">
         <div>
-          {/* Rating */}
-          <div className="flex items-center gap-1.5 text-xs text-[#2B2E2C]/70 mb-1">
-            <div className="flex text-[#C9962F]">
-              <Star className="w-3.5 h-3.5 fill-current" />
+          {/* Rating & Lab Verification Pill */}
+          <div className="flex items-center justify-between gap-2 text-xs mb-1.5">
+            <div className="flex items-center gap-1 text-[#2B2E2C]/70">
+              <div className="flex text-[#FDD229]">
+                <Star className="w-3.5 h-3.5 fill-current" />
+              </div>
+              <span className="font-semibold text-[#2B2E2C]">{product.rating.toFixed(1)}</span>
+              <span>({product.reviewCount})</span>
             </div>
-            <span className="font-semibold text-[#2B2E2C]">{product.rating.toFixed(1)}</span>
-            <span>({product.reviewCount})</span>
+
+            <span className="inline-flex items-center gap-1 text-[10px] font-bold text-[#384E3C] bg-[#384E3C]/10 px-2 py-0.5 rounded-full">
+              <CheckCircle2 className="w-3 h-3 text-[#384E3C]" />
+              Verified
+            </span>
           </div>
 
           {/* Title */}
@@ -138,11 +147,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             <span className="text-[10px] sm:text-xs text-[#2B2E2C]/60 block leading-none">Price</span>
             <div className="flex items-baseline gap-1.5">
               <span className="font-serif text-base sm:text-lg font-bold text-[#2B2E2C]">
-                ${product.price.toFixed(2)}
+                {formatPrice(product.price)}
               </span>
               {product.originalPrice && (
                 <span className="text-[10px] sm:text-xs text-[#2B2E2C]/50 line-through">
-                  ${product.originalPrice.toFixed(2)}
+                  {formatPrice(product.originalPrice)}
                 </span>
               )}
             </div>
@@ -161,5 +170,3 @@ export const ProductCard: React.FC<ProductCardProps> = ({
     </div>
   );
 };
-
-
