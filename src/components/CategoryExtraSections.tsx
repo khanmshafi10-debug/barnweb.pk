@@ -140,14 +140,20 @@ export const CategoryExtraSections: React.FC<CategoryExtraSectionsProps> = ({ ca
 
   const data = config[categoryKey];
 
-  const fadeInUp = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } }
+  const cinematicReveal = {
+    hidden: { opacity: 0, y: 40, scale: 0.96, filter: 'blur(10px)' },
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      scale: 1, 
+      filter: 'blur(0px)',
+      transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } 
+    }
   };
 
   const staggerContainer = {
     hidden: {},
-    visible: { transition: { staggerChildren: 0.1 } }
+    visible: { transition: { staggerChildren: 0.12 } }
   };
 
   return (
@@ -156,23 +162,23 @@ export const CategoryExtraSections: React.FC<CategoryExtraSectionsProps> = ({ ca
       {/* ════════════════════════════════════════════════════════════
           1. TERROIR & MOUNTAIN SOURCING HERITAGE SHOWCASE
       ════════════════════════════════════════════════════════════ */}
-      <section className="py-16 lg:py-24 bg-[#FBF9F4] border-t border-[#2D4233]/10">
+      <section className="py-20 lg:py-28 bg-[#FBF9F4] border-t border-[#2D4233]/10 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div 
-            className="text-center max-w-3xl mx-auto space-y-3 mb-14"
+            className="text-center max-w-3xl mx-auto space-y-4 mb-16"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            variants={fadeInUp}
+            variants={cinematicReveal}
           >
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#2D4233]/10 text-[#2D4233] text-xs font-bold uppercase tracking-wider">
-              <BarnRoofMotif color="#2D4233" height={12} />
+            <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-[#2D4233]/10 text-[#2D4233] text-xs font-bold uppercase tracking-widest">
+              <BarnRoofMotif color="#2D4233" height={14} />
               <span>Pure Origin Terroir</span>
             </div>
-            <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-[#1C241D]">
+            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-[#1C241D]">
               Sourced Directly From {data.origin}
             </h2>
-            <p className="text-base text-[#475569] leading-relaxed">
+            <p className="text-base sm:text-lg text-[#475569] leading-relaxed">
               Harvested at optimal micro-climate elevations where pristine glacial meltwater and mineral-rich virgin soil nourish pure botanical potency.
             </p>
           </motion.div>
@@ -184,41 +190,53 @@ export const CategoryExtraSections: React.FC<CategoryExtraSectionsProps> = ({ ca
             viewport={{ once: true }}
             variants={staggerContainer}
           >
-            <motion.div variants={fadeInUp} className="bg-[#FBF9F4] p-8 rounded-2xl border border-[#E2E8F0] shadow-2xs hover:shadow-lg hover:-translate-y-1 transition-all duration-300 space-y-4">
-              <div className="w-12 h-12 rounded-xl bg-[#2D4233]/10 text-[#2D4233] flex items-center justify-center">
-                <MapPin className="w-6 h-6" />
+            <motion.div 
+              variants={cinematicReveal} 
+              whileHover={{ scale: 1.03, y: -6, transition: { duration: 0.3 } }}
+              className="bg-[#FBF9F4] p-8 rounded-3xl border border-[#E2E8F0] shadow-[0_15px_35px_rgba(0,0,0,0.06)] hover:shadow-2xl transition-all duration-300 space-y-4"
+            >
+              <div className="w-14 h-14 rounded-2xl bg-[#2D4233]/10 text-[#2D4233] flex items-center justify-center shadow-inner">
+                <MapPin className="w-7 h-7" />
               </div>
               <h3 className="font-serif text-xl font-bold text-[#1C241D]">Glacier Escarpment Origin</h3>
               <p className="text-base text-[#475569] leading-relaxed">
                 Harvested exclusively in {data.origin} at high altitude micro-climates ({data.elevation}).
               </p>
-              <div className="pt-2 text-sm font-bold text-[#B58600] flex items-center gap-1.5">
+              <div className="pt-2 text-sm font-bold text-[#B58600] flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-[#2D4233]" /> 100% Traceable Terroir
               </div>
             </motion.div>
 
-            <motion.div variants={fadeInUp} className="bg-[#FBF9F4] p-8 rounded-2xl border border-[#E2E8F0] shadow-2xs hover:shadow-lg hover:-translate-y-1 transition-all duration-300 space-y-4">
-              <div className="w-12 h-12 rounded-xl bg-[#FDD229]/20 text-[#B58600] flex items-center justify-center">
-                <Calendar className="w-6 h-6" />
+            <motion.div 
+              variants={cinematicReveal} 
+              whileHover={{ scale: 1.03, y: -6, transition: { duration: 0.3 } }}
+              className="bg-[#FBF9F4] p-8 rounded-3xl border border-[#E2E8F0] shadow-[0_15px_35px_rgba(0,0,0,0.06)] hover:shadow-2xl transition-all duration-300 space-y-4"
+            >
+              <div className="w-14 h-14 rounded-2xl bg-[#FDD229]/20 text-[#B58600] flex items-center justify-center shadow-inner">
+                <Calendar className="w-7 h-7" />
               </div>
               <h3 className="font-serif text-xl font-bold text-[#1C241D]">Seasonal Harvest Window</h3>
               <p className="text-base text-[#475569] leading-relaxed">
                 {data.harvestSeason}. Gathered only when nature permits peak bio-active compound density.
               </p>
-              <div className="pt-2 text-sm font-bold text-[#B58600] flex items-center gap-1.5">
+              <div className="pt-2 text-sm font-bold text-[#B58600] flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-[#2D4233]" /> Limited Batch Harvest
               </div>
             </motion.div>
 
-            <motion.div variants={fadeInUp} className="bg-[#FBF9F4] p-8 rounded-2xl border border-[#E2E8F0] shadow-2xs hover:shadow-lg hover:-translate-y-1 transition-all duration-300 space-y-4">
-              <div className="w-12 h-12 rounded-xl bg-[#2D4233]/10 text-[#2D4233] flex items-center justify-center">
-                <ShieldCheck className="w-6 h-6" />
+            <motion.div 
+              variants={cinematicReveal} 
+              whileHover={{ scale: 1.03, y: -6, transition: { duration: 0.3 } }}
+              className="bg-[#FBF9F4] p-8 rounded-3xl border border-[#E2E8F0] shadow-[0_15px_35px_rgba(0,0,0,0.06)] hover:shadow-2xl transition-all duration-300 space-y-4"
+            >
+              <div className="w-14 h-14 rounded-2xl bg-[#2D4233]/10 text-[#2D4233] flex items-center justify-center shadow-inner">
+                <ShieldCheck className="w-7 h-7" />
               </div>
               <h3 className="font-serif text-xl font-bold text-[#1C241D]">Curing & Extraction Method</h3>
               <p className="text-base text-[#475569] leading-relaxed">
                 {data.curingDays} using {data.fermentType} to protect natural enzymes.
               </p>
-              <div className="pt-2 text-sm font-bold text-[#B58600] flex items-center gap-1.5">
+              <div className="pt-2 text-sm font-bold text-[#B58600] flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-[#2D4233]" /> Zero Chemical Solvents
               </div>
             </motion.div>
@@ -230,21 +248,21 @@ export const CategoryExtraSections: React.FC<CategoryExtraSectionsProps> = ({ ca
       {/* ════════════════════════════════════════════════════════════
           2. ACTIVE NUTRITIONAL & BIO-COMPOUND BREAKDOWN
       ════════════════════════════════════════════════════════════ */}
-      <section className="py-16 lg:py-24 bg-[#162017] text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-20 lg:py-28 bg-[#162017] text-white relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           
           <motion.div 
-            className="text-center max-w-3xl mx-auto space-y-3 mb-14"
+            className="text-center max-w-3xl mx-auto space-y-4 mb-16"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            variants={fadeInUp}
+            variants={cinematicReveal}
           >
             <span className="text-xs font-bold uppercase tracking-widest text-[#FDD229]">Bio-Active Chemistry</span>
-            <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-white">
+            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-white">
               Primary Active Compounds & Potency
             </h2>
-            <p className="text-base text-white/80 leading-relaxed">
+            <p className="text-base sm:text-lg text-white/80 leading-relaxed">
               Every batch undergoes rigorous bio-assay screening to ensure high concentrations of natural health compounds.
             </p>
           </motion.div>
@@ -259,13 +277,14 @@ export const CategoryExtraSections: React.FC<CategoryExtraSectionsProps> = ({ ca
             {data.activeCompounds.map((item, idx) => (
               <motion.div 
                 key={idx} 
-                variants={fadeInUp}
-                className="bg-white/5 border border-white/15 p-6 rounded-2xl backdrop-blur-sm hover:bg-white/10 transition-all duration-300 space-y-3"
+                variants={cinematicReveal}
+                whileHover={{ scale: 1.03, y: -6, transition: { duration: 0.3 } }}
+                className="bg-white/5 border border-white/15 p-7 rounded-2xl backdrop-blur-md shadow-[0_15px_35px_rgba(0,0,0,0.3)] hover:bg-white/10 transition-all duration-300 space-y-4 group"
               >
-                <span className="inline-block text-xs font-bold uppercase px-3 py-1 bg-[#FDD229] text-black rounded-full">
+                <span className="inline-block text-xs font-bold uppercase px-3.5 py-1.5 bg-[#FDD229] text-black rounded-full shadow-sm">
                   {item.val}
                 </span>
-                <h3 className="font-serif text-xl font-bold text-white">{item.name}</h3>
+                <h3 className="font-serif text-xl font-bold text-white group-hover:text-[#FDD229] transition-colors">{item.name}</h3>
                 <p className="text-base text-white/75 leading-relaxed">{item.desc}</p>
               </motion.div>
             ))}
@@ -277,21 +296,21 @@ export const CategoryExtraSections: React.FC<CategoryExtraSectionsProps> = ({ ca
       {/* ════════════════════════════════════════════════════════════
           3. TRADITIONAL FOUR-STEP HARVEST & PRESERVATION PROCESS
       ════════════════════════════════════════════════════════════ */}
-      <section className="py-16 lg:py-24 bg-[#FBF9F4] border-b border-[#E2E8F0]">
+      <section className="py-20 lg:py-28 bg-[#FBF9F4] border-b border-[#E2E8F0]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
           <motion.div 
-            className="text-center max-w-3xl mx-auto space-y-3 mb-14"
+            className="text-center max-w-3xl mx-auto space-y-4 mb-16"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            variants={fadeInUp}
+            variants={cinematicReveal}
           >
             <span className="text-xs font-bold uppercase tracking-widest text-[#2D4233]">Heritage Method</span>
-            <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-[#1C241D]">
+            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-[#1C241D]">
               Traditional 4-Step Harvest & Processing
             </h2>
-            <p className="text-base text-[#475569] leading-relaxed">
+            <p className="text-base sm:text-lg text-[#475569] leading-relaxed">
               Preserving ancient techniques refined over generations to deliver pure unadulterated quality.
             </p>
           </motion.div>
@@ -306,13 +325,14 @@ export const CategoryExtraSections: React.FC<CategoryExtraSectionsProps> = ({ ca
             {data.processSteps.map((p, i) => (
               <motion.div 
                 key={i} 
-                variants={fadeInUp}
-                className="bg-white p-6 rounded-2xl border border-[#E2E8F0] shadow-2xs hover:shadow-lg transition-all duration-300 space-y-3"
+                variants={cinematicReveal}
+                whileHover={{ scale: 1.03, y: -5, transition: { duration: 0.25 } }}
+                className="bg-white p-7 rounded-2xl border border-[#E2E8F0] shadow-2xs hover:shadow-xl transition-all duration-300 space-y-4"
               >
-                <div className="w-10 h-10 rounded-full bg-[#2D4233] text-[#FDD229] flex items-center justify-center font-bold text-base font-serif">
+                <div className="w-12 h-12 rounded-2xl bg-[#2D4233] text-[#FDD229] flex items-center justify-center font-bold text-lg font-serif shadow-md">
                   {p.step}
                 </div>
-                <h3 className="font-serif text-lg font-bold text-[#1C241D]">{p.title}</h3>
+                <h3 className="font-serif text-xl font-bold text-[#1C241D]">{p.title}</h3>
                 <p className="text-base text-[#475569] leading-relaxed">{p.desc}</p>
               </motion.div>
             ))}
@@ -324,21 +344,21 @@ export const CategoryExtraSections: React.FC<CategoryExtraSectionsProps> = ({ ca
       {/* ════════════════════════════════════════════════════════════
           4. PAIRING & WELLNESS HARMONY GUIDE
       ════════════════════════════════════════════════════════════ */}
-      <section className="py-16 lg:py-24 bg-[#FBF9F4]">
+      <section className="py-20 lg:py-28 bg-[#FBF9F4]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
           <motion.div 
-            className="text-center max-w-3xl mx-auto space-y-3 mb-14"
+            className="text-center max-w-3xl mx-auto space-y-4 mb-16"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            variants={fadeInUp}
+            variants={cinematicReveal}
           >
             <span className="text-xs font-bold uppercase tracking-widest text-[#B58600]">Optimal Bio-Availability</span>
-            <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-[#1C241D]">
+            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-[#1C241D]">
               Culinary & Wellness Pairings
             </h2>
-            <p className="text-base text-[#475569] leading-relaxed">
+            <p className="text-base sm:text-lg text-[#475569] leading-relaxed">
               Pairing natural ingredients with ideal foods maximizes absorption speed and enhances flavor harmony.
             </p>
           </motion.div>
@@ -351,10 +371,15 @@ export const CategoryExtraSections: React.FC<CategoryExtraSectionsProps> = ({ ca
             variants={staggerContainer}
           >
             {data.pairings.map((pair, idx) => (
-              <motion.div key={idx} variants={fadeInUp} className="bg-white p-8 rounded-2xl border border-[#E2E8F0] shadow-2xs hover:shadow-md transition-shadow space-y-4">
-                <div className="flex items-center justify-between border-b border-[#E2E8F0] pb-3">
+              <motion.div 
+                key={idx} 
+                variants={cinematicReveal}
+                whileHover={{ y: -5, shadow: '0 20px 40px rgba(0,0,0,0.08)' }}
+                className="bg-white p-8 rounded-3xl border border-[#E2E8F0] shadow-2xs transition-all duration-300 space-y-4"
+              >
+                <div className="flex items-center justify-between border-b border-[#E2E8F0] pb-4">
                   <h3 className="font-serif text-xl font-bold text-[#1C241D]">{pair.food}</h3>
-                  <span className="text-xs font-bold text-[#2D4233] bg-[#2D4233]/10 px-2.5 py-1 rounded-full">{pair.match}</span>
+                  <span className="text-xs font-bold text-[#2D4233] bg-[#2D4233]/10 px-3 py-1 rounded-full">{pair.match}</span>
                 </div>
                 <p className="text-base text-[#475569] leading-relaxed">{pair.note}</p>
               </motion.div>
@@ -367,18 +392,18 @@ export const CategoryExtraSections: React.FC<CategoryExtraSectionsProps> = ({ ca
       {/* ════════════════════════════════════════════════════════════
           5. CATEGORY SPECIFIC FREQUENTLY ASKED QUESTIONS
       ════════════════════════════════════════════════════════════ */}
-      <section className="py-16 lg:py-24 bg-[#162017] text-white">
+      <section className="py-20 lg:py-28 bg-[#162017] text-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           
           <motion.div 
-            className="text-center space-y-3 mb-14"
+            className="text-center space-y-4 mb-16"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            variants={fadeInUp}
+            variants={cinematicReveal}
           >
             <span className="text-xs font-bold uppercase tracking-widest text-[#FDD229]">Expert Guidance</span>
-            <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-white">
+            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-white">
               Category Knowledge & FAQs
             </h2>
           </motion.div>
@@ -395,21 +420,21 @@ export const CategoryExtraSections: React.FC<CategoryExtraSectionsProps> = ({ ca
               return (
                 <motion.div 
                   key={idx} 
-                  variants={fadeInUp}
-                  className="bg-white/5 border border-white/15 rounded-2xl overflow-hidden transition-colors"
+                  variants={cinematicReveal}
+                  className="bg-white/5 border border-white/15 rounded-2xl overflow-hidden backdrop-blur-md transition-colors"
                 >
                   <button 
                     onClick={() => setOpenFaq(isOpen ? null : idx)}
-                    className="w-full p-6 text-left flex items-center justify-between gap-4 hover:bg-white/10 transition-colors"
+                    className="w-full p-6 sm:p-7 text-left flex items-center justify-between gap-4 hover:bg-white/10 transition-colors"
                   >
                     <div>
                       <h3 className="font-serif text-lg sm:text-xl font-bold text-white mb-1">{faq.q}</h3>
                       <p className="text-xs text-[#FDD229] font-medium">{faq.q_bg}</p>
                     </div>
-                    <ChevronDown className={`w-5 h-5 text-[#FDD229] shrink-0 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
+                    <ChevronDown className={`w-6 h-6 text-[#FDD229] shrink-0 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
                   </button>
                   {isOpen && (
-                    <div className="px-6 pb-6 pt-2 text-base text-white/80 leading-relaxed border-t border-white/10">
+                    <div className="px-6 sm:px-7 pb-7 pt-2 text-base text-white/80 leading-relaxed border-t border-white/10 animate-fade-in">
                       {faq.a}
                     </div>
                   )}

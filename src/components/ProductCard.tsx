@@ -43,8 +43,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 
   return (
     <motion.div 
-      whileHover={{ y: -5, transition: { duration: 0.25, ease: 'easeOut' } }}
-      className="group relative bg-[#FBF9F4] rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow duration-300 border border-[#2D4233]/12 flex flex-col h-full"
+      whileHover={{ 
+        y: -7, 
+        scale: 1.015,
+        shadow: '0 25px 50px rgba(45, 66, 51, 0.15)',
+        transition: { duration: 0.3, ease: [0.22, 1, 0.36, 1] } 
+      }}
+      className="group relative bg-[#FBF9F4] rounded-2xl overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.05)] border border-[#2D4233]/15 flex flex-col h-full transition-all duration-300"
     >
       {/* Image Container */}
       <div className="relative aspect-4/3 overflow-hidden bg-[#F7F5F0]">
