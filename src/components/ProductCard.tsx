@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { motion } from 'motion/react';
 import { Product } from '../types';
 import { BarnRoofMotif } from './BarnRoofMotif';
 import { Button } from './Button';
@@ -41,7 +42,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       };
 
   return (
-    <div className="group relative bg-[#FBF9F4] rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-[#2D4233]/12 flex flex-col h-full hover:-translate-y-1">
+    <motion.div 
+      whileHover={{ y: -5, transition: { duration: 0.25, ease: 'easeOut' } }}
+      className="group relative bg-[#FBF9F4] rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow duration-300 border border-[#2D4233]/12 flex flex-col h-full"
+    >
       {/* Image Container */}
       <div className="relative aspect-4/3 overflow-hidden bg-[#F7F5F0]">
         <ImageWithFallback
@@ -167,6 +171,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           </Button>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
