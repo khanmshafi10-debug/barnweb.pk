@@ -6,7 +6,7 @@ import { ProductCard } from '../components/ProductCard';
 import { LuxuryHeroCard } from '../components/LuxuryHeroCard';
 import { BarnRoofMotif } from '../components/BarnRoofMotif';
 import { Product } from '../types';
-import { CheckCircle2, ArrowRight, ChevronRight, ChevronDown, Star, Sun, Moon, Sunrise, Truck, Package, RotateCcw, Zap, Heart, Target, TrendingUp, FlaskConical, ShieldCheck, Award, X, Phone, Mail } from 'lucide-react';
+import { CheckCircle2, ArrowRight, ChevronRight, ChevronDown, Star, Sun, Moon, Sunrise, Truck, Package, RotateCcw, Zap, Heart, Target, TrendingUp, FlaskConical, ShieldCheck, Award, X, Phone, Mail, Eye } from 'lucide-react';
 import { CategoryExtraSections } from '../components/CategoryExtraSections';
 import { SubcategoryExtra9Sections } from '../components/SubcategoryExtra9Sections';
 
@@ -630,38 +630,187 @@ export const SubcategoryDetail: React.FC<SubcategoryDetailProps> = ({
         </div>
       </section>
 
-      {/* ═══════════ 11. GALLERY GRID ═══════════ */}
-      <section ref={s3.ref} id="gallery" style={{ backgroundColor: '#F7F5F0' }}>
-        <div className="max-w-[1240px] mx-auto px-5 py-20 lg:py-28">
+      {/* ═══════════ 11. BENTO MASONRY GALLERY GRID ═══════════ */}
+      <section ref={s3.ref} id="gallery" className="py-20 lg:py-28 bg-[#FBF9F4] border-t border-[#2D4233]/10 relative overflow-hidden">
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className={`text-center mb-14 ${anim(s3.visible)}`}>
-            <span className="text-[11px] uppercase font-bold tracking-[3px] block mb-3" style={{ color: '#C9962F' }}>{subData.galleryTitle}</span>
-            <h2 className="text-3xl sm:text-[38px] font-bold" style={{ color: '#2A2A2A', fontFamily: "'Poppins', sans-serif" }}>Our Premium Showcase Gallery</h2>
-            <p className="text-sm mt-3 max-w-md mx-auto" style={{ color: '#999' }}>Click any image to view full size.</p>
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#2D4233]/10 text-[#2D4233] text-xs font-bold uppercase tracking-wider mb-3">
+              <BarnRoofMotif color="#2D4233" height={12} />
+              <span>{subData.galleryTitle}</span>
+            </div>
+            <h2 className="text-3xl sm:text-[40px] font-bold text-[#1C241D]" style={{ fontFamily: "'Poppins', sans-serif" }}>
+              Our Premium Showcase Gallery
+            </h2>
+            <p className="text-base text-[#64748B] mt-2 max-w-md mx-auto">
+              Click any showcase image to expand and view high-resolution details.
+            </p>
           </div>
-          <div className={`grid grid-cols-2 md:grid-cols-3 gap-5 ${anim(s3.visible)}`}>
-            {g.map((img, i) => (
-              <div
-                key={i}
-                className="group cursor-pointer overflow-hidden relative bg-white"
-                style={{ borderRadius: '6px', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}
-                onClick={() => setLightboxImg(img.url)}
+
+          {/* Asymmetrical Bento-Box Grid Layout matching reference image */}
+          <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-5 ${anim(s3.visible)}`}>
+            
+            {/* 1. Left Tall Vertical Frame */}
+            {g[0] && (
+              <div 
+                className="lg:col-span-4 lg:row-span-2 group relative overflow-hidden rounded-2xl bg-[#162017] cursor-pointer shadow-md hover:shadow-2xl hover:-translate-y-1 transition-all duration-500 border border-[#2D4233]/15 min-h-[340px] lg:min-h-[500px]"
+                onClick={() => setLightboxImg(g[0].url)}
               >
                 <img
-                  src={img.url}
-                  alt={img.caption}
-                  className="w-full h-60 sm:h-68 md:h-72 object-cover group-hover:scale-105 transition-transform duration-700"
+                  src={g[0].url}
+                  alt={g[0].caption}
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 ease-out"
                   onError={(e) => {
                     if (e.currentTarget.src !== DEFAULT_FALLBACK_IMG) {
                       e.currentTarget.src = DEFAULT_FALLBACK_IMG;
                     }
                   }}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-500">
-                  <span className="text-xs font-bold text-white">{img.caption}</span>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300" />
+                <div className="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:scale-110">
+                  <Eye className="w-4 h-4" />
+                </div>
+                <div className="absolute bottom-5 left-5 right-5 text-white">
+                  <span className="inline-block text-[10px] font-bold uppercase tracking-widest text-[#FDD229] mb-1">Terroir Showcase</span>
+                  <h3 className="font-serif text-lg font-bold drop-shadow-md">{g[0].caption}</h3>
                 </div>
               </div>
-            ))}
+            )}
+
+            {/* 2. Top Middle Wide Panorama Banner */}
+            {g[1] && (
+              <div 
+                className="lg:col-span-8 group relative overflow-hidden rounded-2xl bg-[#162017] cursor-pointer shadow-md hover:shadow-2xl hover:-translate-y-1 transition-all duration-500 border border-[#2D4233]/15 min-h-[220px] lg:min-h-[240px]"
+                onClick={() => setLightboxImg(g[1].url)}
+              >
+                <img
+                  src={g[1].url}
+                  alt={g[1].caption}
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 ease-out"
+                  onError={(e) => {
+                    if (e.currentTarget.src !== DEFAULT_FALLBACK_IMG) {
+                      e.currentTarget.src = DEFAULT_FALLBACK_IMG;
+                    }
+                  }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300" />
+                <div className="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:scale-110">
+                  <Eye className="w-4 h-4" />
+                </div>
+                <div className="absolute bottom-5 left-5 right-5 text-white">
+                  <span className="inline-block text-[10px] font-bold uppercase tracking-widest text-[#FDD229] mb-1">Mountain Origin</span>
+                  <h3 className="font-serif text-lg font-bold drop-shadow-md">{g[1].caption}</h3>
+                </div>
+              </div>
+            )}
+
+            {/* 3. Center Middle Card */}
+            {g[2] && (
+              <div 
+                className="lg:col-span-4 group relative overflow-hidden rounded-2xl bg-[#162017] cursor-pointer shadow-md hover:shadow-2xl hover:-translate-y-1 transition-all duration-500 border border-[#2D4233]/15 min-h-[220px] lg:min-h-[240px]"
+                onClick={() => setLightboxImg(g[2].url)}
+              >
+                <img
+                  src={g[2].url}
+                  alt={g[2].caption}
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 ease-out"
+                  onError={(e) => {
+                    if (e.currentTarget.src !== DEFAULT_FALLBACK_IMG) {
+                      e.currentTarget.src = DEFAULT_FALLBACK_IMG;
+                    }
+                  }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300" />
+                <div className="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:scale-110">
+                  <Eye className="w-4 h-4" />
+                </div>
+                <div className="absolute bottom-5 left-5 right-5 text-white">
+                  <span className="inline-block text-[10px] font-bold uppercase tracking-widest text-[#FDD229] mb-1">Pure Processing</span>
+                  <h3 className="font-serif text-lg font-bold drop-shadow-md">{g[2].caption}</h3>
+                </div>
+              </div>
+            )}
+
+            {/* 4. Right Tall Vertical Tower Frame */}
+            {g[3] && (
+              <div 
+                className="lg:col-span-4 lg:row-span-2 group relative overflow-hidden rounded-2xl bg-[#162017] cursor-pointer shadow-md hover:shadow-2xl hover:-translate-y-1 transition-all duration-500 border border-[#2D4233]/15 min-h-[340px] lg:min-h-[500px]"
+                onClick={() => setLightboxImg(g[3].url)}
+              >
+                <img
+                  src={g[3].url}
+                  alt={g[3].caption}
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 ease-out"
+                  onError={(e) => {
+                    if (e.currentTarget.src !== DEFAULT_FALLBACK_IMG) {
+                      e.currentTarget.src = DEFAULT_FALLBACK_IMG;
+                    }
+                  }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300" />
+                <div className="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:scale-110">
+                  <Eye className="w-4 h-4" />
+                </div>
+                <div className="absolute bottom-5 left-5 right-5 text-white">
+                  <span className="inline-block text-[10px] font-bold uppercase tracking-widest text-[#FDD229] mb-1">Botanical Harvest</span>
+                  <h3 className="font-serif text-lg font-bold drop-shadow-md">{g[3].caption}</h3>
+                </div>
+              </div>
+            )}
+
+            {/* 5. Bottom Center Left Card */}
+            {g[4] && (
+              <div 
+                className="lg:col-span-4 group relative overflow-hidden rounded-2xl bg-[#162017] cursor-pointer shadow-md hover:shadow-2xl hover:-translate-y-1 transition-all duration-500 border border-[#2D4233]/15 min-h-[220px] lg:min-h-[240px]"
+                onClick={() => setLightboxImg(g[4].url)}
+              >
+                <img
+                  src={g[4].url}
+                  alt={g[4].caption}
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 ease-out"
+                  onError={(e) => {
+                    if (e.currentTarget.src !== DEFAULT_FALLBACK_IMG) {
+                      e.currentTarget.src = DEFAULT_FALLBACK_IMG;
+                    }
+                  }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300" />
+                <div className="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:scale-110">
+                  <Eye className="w-4 h-4" />
+                </div>
+                <div className="absolute bottom-5 left-5 right-5 text-white">
+                  <span className="inline-block text-[10px] font-bold uppercase tracking-widest text-[#FDD229] mb-1">Wellness Integration</span>
+                  <h3 className="font-serif text-lg font-bold drop-shadow-md">{g[4].caption}</h3>
+                </div>
+              </div>
+            )}
+
+            {/* 6. Bottom Center Right Card */}
+            {g[5] && (
+              <div 
+                className="lg:col-span-4 group relative overflow-hidden rounded-2xl bg-[#162017] cursor-pointer shadow-md hover:shadow-2xl hover:-translate-y-1 transition-all duration-500 border border-[#2D4233]/15 min-h-[220px] lg:min-h-[240px]"
+                onClick={() => setLightboxImg(g[5].url)}
+              >
+                <img
+                  src={g[5].url}
+                  alt={g[5].caption}
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 ease-out"
+                  onError={(e) => {
+                    if (e.currentTarget.src !== DEFAULT_FALLBACK_IMG) {
+                      e.currentTarget.src = DEFAULT_FALLBACK_IMG;
+                    }
+                  }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300" />
+                <div className="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:scale-110">
+                  <Eye className="w-4 h-4" />
+                </div>
+                <div className="absolute bottom-5 left-5 right-5 text-white">
+                  <span className="inline-block text-[10px] font-bold uppercase tracking-widest text-[#FDD229] mb-1">Soil Care</span>
+                  <h3 className="font-serif text-lg font-bold drop-shadow-md">{g[5].caption}</h3>
+                </div>
+              </div>
+            )}
+
           </div>
         </div>
       </section>
