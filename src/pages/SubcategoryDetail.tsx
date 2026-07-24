@@ -428,37 +428,24 @@ export const SubcategoryDetail: React.FC<SubcategoryDetailProps> = ({
         </div>
       </section>
 
-      {/* ═══════════ 4. GALLERY GRID ═══════════ */}
-      <section ref={s3.ref} id="gallery" style={{ backgroundColor: '#F7F5F0' }}>
-        <div className="max-w-[1240px] mx-auto px-5 py-20 lg:py-28">
-          <div className={`text-center mb-14 ${anim(s3.visible)}`}>
-            <span className="text-[11px] uppercase font-bold tracking-[3px] block mb-3" style={{ color: '#C9962F' }}>{subData.galleryTitle}</span>
-            <h2 className="text-3xl sm:text-[38px] font-bold" style={{ color: '#2A2A2A', fontFamily: "'Poppins', sans-serif" }}>Our Premium Collection</h2>
-            <p className="text-sm mt-3 max-w-md mx-auto" style={{ color: '#999' }}>Click any image to view full size.</p>
+      {/* ═══════════ 4. PRODUCT CATALOG ═══════════ */}
+      <section ref={s9.ref} id="catalog" className="bg-[#FBFCFC]">
+        <div className={`max-w-[1240px] mx-auto px-5 py-20 lg:py-28 ${anim(s9.visible)}`}>
+          <div className="text-center mb-14">
+            <div className="inline-flex items-center gap-2 bg-[#384E3C] text-white px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-widest mb-4 shadow-md border border-white/20">
+              <ShieldCheck className="w-4 h-4 text-[#FDD229]" />
+              <span>PCSIR Lab Certified & Verified Products</span>
+            </div>
+            <span className="text-[11px] uppercase font-bold tracking-[3px] block mb-3 text-[#FDD229]">Product Catalog</span>
+            <h2 className="text-3xl sm:text-[38px] font-bold text-[#1E293B]" style={{ fontFamily: "'Poppins', sans-serif" }}>{subData.title} Collection</h2>
+            <p className="text-base sm:text-lg font-semibold text-[#1E293B] mt-3 flex items-center justify-center gap-2">
+              <Award className="w-5 h-5 text-[#384E3C]" />
+              <span>All products certified for 0.00% Heavy Metals & 100% Organic Purity</span>
+            </p>
           </div>
-          <div className={`grid grid-cols-2 md:grid-cols-3 gap-5 ${anim(s3.visible)}`}>
-            {g.map((img, i) => (
-              <div
-                key={i}
-                className="group cursor-pointer overflow-hidden relative bg-white"
-                style={{ borderRadius: '6px', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}
-                onClick={() => setLightboxImg(img.url)}
-              >
-                <img
-                  src={img.url}
-                  alt={img.caption}
-                  className="w-full h-60 sm:h-68 md:h-72 object-cover group-hover:scale-105 transition-transform duration-700"
-                  onError={(e) => {
-                    if (e.currentTarget.src !== DEFAULT_FALLBACK_IMG) {
-                      e.currentTarget.src = DEFAULT_FALLBACK_IMG;
-                    }
-                  }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-500">
-                  <span className="text-xs font-bold text-white">{img.caption}</span>
-                </div>
-              </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {matchingProducts.map((product) => (
+              <ProductCard key={product.id} product={product} onAddToCart={onAddToCart} onQuickView={onQuickView} onToggleWishlist={onToggleWishlist} isWishlisted={wishlistIds.includes(product.id)} />
             ))}
           </div>
         </div>
@@ -643,24 +630,37 @@ export const SubcategoryDetail: React.FC<SubcategoryDetailProps> = ({
         </div>
       </section>
 
-      {/* ═══════════ 11. PRODUCT CATALOG ═══════════ */}
-      <section ref={s9.ref} id="catalog" className="bg-[#FBFCFC]">
-        <div className={`max-w-[1240px] mx-auto px-5 py-20 lg:py-28 ${anim(s9.visible)}`}>
-          <div className="text-center mb-14">
-            <div className="inline-flex items-center gap-2 bg-[#384E3C] text-white px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-widest mb-4 shadow-md border border-white/20">
-              <ShieldCheck className="w-4 h-4 text-[#FDD229]" />
-              <span>PCSIR Lab Certified & Verified Products</span>
-            </div>
-            <span className="text-[11px] uppercase font-bold tracking-[3px] block mb-3 text-[#FDD229]">Product Catalog</span>
-            <h2 className="text-3xl sm:text-[38px] font-bold text-[#1E293B]" style={{ fontFamily: "'Poppins', sans-serif" }}>{subData.title} Collection</h2>
-            <p className="text-base sm:text-lg font-semibold text-[#1E293B] mt-3 flex items-center justify-center gap-2">
-              <Award className="w-5 h-5 text-[#384E3C]" />
-              <span>All products certified for 0.00% Heavy Metals & 100% Organic Purity</span>
-            </p>
+      {/* ═══════════ 11. GALLERY GRID ═══════════ */}
+      <section ref={s3.ref} id="gallery" style={{ backgroundColor: '#F7F5F0' }}>
+        <div className="max-w-[1240px] mx-auto px-5 py-20 lg:py-28">
+          <div className={`text-center mb-14 ${anim(s3.visible)}`}>
+            <span className="text-[11px] uppercase font-bold tracking-[3px] block mb-3" style={{ color: '#C9962F' }}>{subData.galleryTitle}</span>
+            <h2 className="text-3xl sm:text-[38px] font-bold" style={{ color: '#2A2A2A', fontFamily: "'Poppins', sans-serif" }}>Our Premium Showcase Gallery</h2>
+            <p className="text-sm mt-3 max-w-md mx-auto" style={{ color: '#999' }}>Click any image to view full size.</p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {matchingProducts.map((product) => (
-              <ProductCard key={product.id} product={product} onAddToCart={onAddToCart} onQuickView={onQuickView} onToggleWishlist={onToggleWishlist} isWishlisted={wishlistIds.includes(product.id)} />
+          <div className={`grid grid-cols-2 md:grid-cols-3 gap-5 ${anim(s3.visible)}`}>
+            {g.map((img, i) => (
+              <div
+                key={i}
+                className="group cursor-pointer overflow-hidden relative bg-white"
+                style={{ borderRadius: '6px', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}
+                onClick={() => setLightboxImg(img.url)}
+              >
+                <img
+                  src={img.url}
+                  alt={img.caption}
+                  className="w-full h-60 sm:h-68 md:h-72 object-cover group-hover:scale-105 transition-transform duration-700"
+                  onError={(e) => {
+                    if (e.currentTarget.src !== DEFAULT_FALLBACK_IMG) {
+                      e.currentTarget.src = DEFAULT_FALLBACK_IMG;
+                    }
+                  }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-500">
+                  <span className="text-xs font-bold text-white">{img.caption}</span>
+                </div>
+              </div>
             ))}
           </div>
         </div>
