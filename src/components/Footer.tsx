@@ -16,7 +16,7 @@ export const Footer: React.FC = () => {
   };
 
   return (
-    <footer className="bg-gradient-to-br from-[#18261C] via-[#2F2768] to-[#121A15] text-[#FBFCFC] pt-16 pb-12 relative overflow-hidden border-t-4 border-[#FDD229]">
+    <footer className="bg-gradient-to-br from-[#0B132B] via-[#1E295D] to-[#0A0F24] text-[#FBFCFC] pt-16 pb-12 relative overflow-hidden border-t-4 border-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Main Grid */}
@@ -25,7 +25,7 @@ export const Footer: React.FC = () => {
           {/* Brand Info Column */}
           <div className="lg:col-span-2 space-y-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-[#384E3C] text-[#FBFCFC] flex items-center justify-center shadow-md border border-white/10">
+              <div className="w-10 h-10 rounded-xl bg-[#1E3A8A] text-[#FBFCFC] flex items-center justify-center shadow-md border border-white/10">
                 <BarnRoofMotif color="#FBFCFC" height={16} />
               </div>
               <span className="font-serif text-2xl font-bold tracking-tight text-[#FBFCFC]">
@@ -73,12 +73,6 @@ export const Footer: React.FC = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/nuts" className="hover:text-[#FDD229] transition-colors flex items-center gap-1.5">
-                  <Heart className="w-3.5 h-3.5 text-[#FDD229]" />
-                  <span>Hunza Dry Fruits & Nuts</span>
-                </Link>
-              </li>
-              <li>
                 <Link to="/shop?category=grown" className="hover:text-[#FDD229] transition-colors">
                   Raw Sidr & Wildflower Honey
                 </Link>
@@ -96,6 +90,12 @@ export const Footer: React.FC = () => {
                 <Link to="/track-order" className="hover:text-[#FDD229] transition-colors flex items-center gap-1.5">
                   <Truck className="w-3.5 h-3.5 text-[#FDD229]" />
                   <span>Track Order Shipment</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/about" className="hover:text-[#FDD229] transition-colors flex items-center gap-1.5">
+                  <Heart className="w-3.5 h-3.5 text-[#FDD229]" />
+                  <span>About Our Heritage & Story</span>
                 </Link>
               </li>
               <li>

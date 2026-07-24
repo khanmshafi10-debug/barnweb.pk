@@ -29,14 +29,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   // Palette tokens based on line
   const theme = isGrown
     ? {
-        accentColor: '#2D4233',
-        badgeBg: 'bg-[#2D4233]',
+        accentColor: '#1E3A8A',
+        badgeBg: 'bg-[#1E3A8A]',
         badgeText: 'text-[#FBF9F4]',
         buttonVariant: 'primary-grown' as const,
       }
     : {
-        accentColor: '#1D2A21',
-        badgeBg: 'bg-[#1D2A21]',
+        accentColor: '#0F172A',
+        badgeBg: 'bg-[#0F172A]',
         badgeText: 'text-[#FBF9F4]',
         buttonVariant: 'primary-restored' as const,
       };
@@ -46,10 +46,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       whileHover={{ 
         y: -7, 
         scale: 1.015,
-        shadow: '0 25px 50px rgba(45, 66, 51, 0.15)',
+        shadow: '0 25px 50px rgba(30, 58, 138, 0.15)',
         transition: { duration: 0.3, ease: [0.22, 1, 0.36, 1] } 
       }}
-      className="group relative bg-[#FBF9F4] rounded-2xl overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.05)] border border-[#2D4233]/15 flex flex-col h-full transition-all duration-300"
+      className="group relative bg-[#FBF9F4] rounded-2xl overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.05)] border border-[#1E3A8A]/15 flex flex-col h-full transition-all duration-300"
     >
       {/* Image Container */}
       <div className="relative aspect-4/3 overflow-hidden bg-[#F7F5F0]">
@@ -69,7 +69,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 
           {/* Certification Badge — 2 to 3 products per page featured with certification */}
           {(product.isCertified ?? true) && (
-            <span className="px-2.5 py-1 rounded-md text-[9.5px] font-bold uppercase tracking-wider bg-[#384E3C] text-white shadow-md flex items-center gap-1 border border-white/20">
+            <span className="px-2.5 py-1 rounded-md text-[9.5px] font-bold uppercase tracking-wider bg-[#1E3A8A] text-white shadow-md flex items-center gap-1 border border-white/20">
               <ShieldCheck className="w-3.5 h-3.5 text-[#FDD229] shrink-0" />
               <span>{product.certification || 'PCSIR Lab Certified'}</span>
             </span>
@@ -102,7 +102,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           {onQuickView && (
             <button
               onClick={() => onQuickView(product)}
-              className="w-8 h-8 rounded-full bg-[#FBFCFC]/90 backdrop-blur-md text-[#2B2E2C] hover:text-[#384E3C] hover:bg-white flex items-center justify-center sm:opacity-0 sm:group-hover:opacity-100 transition-all duration-200 shadow-md"
+              className="w-8 h-8 rounded-full bg-[#FBFCFC]/90 backdrop-blur-md text-[#2B2E2C] hover:text-[#1E3A8A] hover:bg-white flex items-center justify-center sm:opacity-0 sm:group-hover:opacity-100 transition-all duration-200 shadow-md"
               title="Quick View"
               aria-label="Quick View product"
             >
@@ -131,8 +131,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               <span>({product.reviewCount})</span>
             </div>
 
-            <span className="inline-flex items-center gap-1 text-[10px] font-bold text-[#384E3C] bg-[#384E3C]/10 px-2 py-0.5 rounded-full">
-              <CheckCircle2 className="w-3 h-3 text-[#384E3C]" />
+            <span className="inline-flex items-center gap-1 text-[10px] font-bold text-[#1E3A8A] bg-[#1E3A8A]/10 px-2 py-0.5 rounded-full">
+              <CheckCircle2 className="w-3 h-3 text-[#1E3A8A]" />
               Verified
             </span>
           </div>

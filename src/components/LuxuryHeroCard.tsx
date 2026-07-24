@@ -42,7 +42,7 @@ export const LuxuryHeroCard: React.FC<LuxuryHeroCardProps> = ({
         {/* Top Left Certification Badge */}
         {badge && (
           <div className="absolute top-3.5 left-3.5 z-20">
-            <span className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#384E3C]/90 text-white backdrop-blur-md shadow-md border border-white/20">
+            <span className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#1E3A8A]/90 text-white backdrop-blur-md shadow-md border border-white/20">
               {badge}
             </span>
           </div>
@@ -65,7 +65,7 @@ export const LuxuryHeroCard: React.FC<LuxuryHeroCardProps> = ({
 
           <button
             onClick={onAddToCart}
-            className="w-9 h-9 rounded-full bg-white/85 backdrop-blur-md text-[#2B2E2C] hover:text-[#384E3C] hover:bg-white flex items-center justify-center shadow-lg transition-all cursor-pointer"
+            className="w-9 h-9 rounded-full bg-white/85 backdrop-blur-md text-[#2B2E2C] hover:text-[#1E3A8A] hover:bg-white flex items-center justify-center shadow-lg transition-all cursor-pointer"
             title="Quick Add to Cart"
             aria-label="Quick Add"
           >

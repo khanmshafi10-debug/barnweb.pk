@@ -52,124 +52,101 @@ function AnimatedCounter({ end, suffix = '', duration = 2000 }: { end: number; s
 
 const DEFAULT_FALLBACK_IMG = 'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=800&q=80';
 
-/* ═══════ WallCurtains-style decorative image frame ═══════ */
-/* Arch-topped image with offset dark border outline + beige background rectangle + small circle accent */
-function DecorativeFrame({ src, alt, small, reverse }: { src: string; alt: string; small?: string; reverse?: boolean }) {
+/* ═══════ Exact Arch Overlap Decorative Image Frame ═══════ */
+function DecorativeFrame({ src, alt, small, reverse, categoryKey }: { src: string; alt: string; small?: string; reverse?: boolean; categoryKey?: string }) {
+  const isGreen = categoryKey === 'supplements';
+  const blockBg = isGreen ? 'bg-[#F2E5D7] border border-[#2D4233]/20' : 'bg-[#EEF2FF] border border-[#1E3A8A]/20';
+  const archBorder = isGreen ? 'border-[#2D4233]' : 'border-[#1E3A8A]';
+  const badgeBorder = isGreen ? 'border-white' : 'border-[#FDD229]';
+
+  // In new design, shuffle frame layer placements (invert orientation)
+  const isShifted = isGreen ? !!reverse : !reverse;
+
+  const blockPosition = isShifted ? 'bottom-0 right-0' : 'bottom-0 left-0';
+  const mainImagePosition = isShifted ? 'bottom-8 right-[42px]' : 'bottom-8 left-[42px]';
+  const archRingPosition = isShifted ? 'top-0 left-0' : 'top-0 right-0';
+  const badgePosition = isShifted ? 'top-[24px] -left-6 sm:-left-8' : 'top-[24px] -right-6 sm:-right-8';
+
   return (
-    <div className="relative" style={{ minHeight: '460px' }}>
-      {/* Offset beige/tan background rectangle — shifted behind the image */}
+    <div className="relative w-full max-w-[480px] aspect-[4/5] min-h-[460px] sm:min-h-[500px] mx-auto select-none">
+      
+      {/* 1. Layer 1: Soft Rounded Base Block */}
       <div
-        className="absolute"
-        style={{
-          width: '65%',
-          height: '75%',
-          backgroundColor: '#E8DCC8',
-          borderRadius: '4px',
-          bottom: reverse ? 'auto' : '0',
-          top: reverse ? '0' : 'auto',
-          left: reverse ? 'auto' : '0',
-          right: reverse ? '0' : 'auto',
-          zIndex: 0,
-        }}
+        className={`absolute w-[58%] h-[52%] rounded-3xl ${blockBg} transition-all duration-500 z-0 ${blockPosition}`}
       />
 
-      {/* Dark outline border — rounded-top arch shape, offset from image */}
+      {/* 2. Layer 2: Main Arch Image (Middle Layer) */}
       <div
-        className="absolute"
-        style={{
-          width: '78%',
-          height: '92%',
-          border: '3px solid #3D5A45',
-          borderRadius: '200px 200px 8px 8px',
-          top: reverse ? '20px' : '-10px',
-          left: reverse ? '-10px' : '50px',
-          zIndex: 1,
-        }}
-      />
-
-      {/* Main arch-topped image */}
-      <div
-        className="relative overflow-hidden"
-        style={{
-          width: '75%',
-          height: '430px',
-          borderRadius: '200px 200px 8px 8px',
-          marginLeft: reverse ? '0' : '40px',
-          marginRight: reverse ? '40px' : '0',
-          marginTop: '15px',
-          zIndex: 2,
-          float: reverse ? 'right' : 'left',
-        }}
+        className={`absolute w-[78%] h-[84%] rounded-t-[200px] sm:rounded-t-[240px] rounded-b-xl overflow-hidden shadow-lg border border-black/5 transition-all duration-700 z-10 group ${mainImagePosition}`}
       >
         <img
           src={src}
           alt={alt}
-          className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 ease-out"
           onError={(e) => {
             if (e.currentTarget.src !== DEFAULT_FALLBACK_IMG) {
               e.currentTarget.src = DEFAULT_FALLBACK_IMG;
             }
           }}
         />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
       </div>
 
-      {/* Small circle accent image — top corner */}
+      {/* 3. Layer 3: Front Arch Outline Ring */}
+      <div
+        className={`absolute w-[78%] h-[84%] rounded-t-[200px] sm:rounded-t-[240px] rounded-b-xl border-[3.5px] ${archBorder} pointer-events-none transition-transform duration-500 z-20 ${archRingPosition}`}
+      />
+
+      {/* 4. Layer 4: Small Circle Accent Badge */}
       {small && (
         <div
-          className="absolute overflow-hidden"
-          style={{
-            width: '90px',
-            height: '90px',
-            borderRadius: '50%',
-            border: '4px solid white',
-            boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
-            top: '5px',
-            right: reverse ? 'auto' : '0',
-            left: reverse ? '0' : 'auto',
-            zIndex: 3,
-          }}
+          className={`absolute z-30 transition-all duration-500 hover:scale-110 ${badgePosition}`}
         >
-          <img
-            src={small}
-            alt="accent"
-            className="w-full h-full object-cover"
-            onError={(e) => {
-              if (e.currentTarget.src !== DEFAULT_FALLBACK_IMG) {
-                e.currentTarget.src = DEFAULT_FALLBACK_IMG;
-              }
-            }}
-          />
+          <div className={`relative w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden border-4 ${badgeBorder} shadow-lg bg-white`}>
+            <img
+              src={small}
+              alt="accent"
+              className="w-full h-full object-cover"
+              onError={(e) => {
+                if (e.currentTarget.src !== DEFAULT_FALLBACK_IMG) {
+                  e.currentTarget.src = DEFAULT_FALLBACK_IMG;
+                }
+              }}
+            />
+          </div>
         </div>
       )}
+
     </div>
   );
 }
 
-/* ═══════ WallCurtains-style rectangular overlapping frame ═══════ */
-/* Two overlapping rectangles with dark border outline */
-function OverlappingFrame({ src, alt, src2 }: { src: string; alt: string; src2?: string }) {
-  return (
-    <div className="relative" style={{ minHeight: '440px' }}>
-      {/* Dark border outline rectangle — offset */}
-      <div
-        className="absolute"
-        style={{
-          width: '70%',
-          height: '70%',
-          border: '3px solid #384E3C',
-          borderRadius: '6px',
-          bottom: '0',
-          right: '0',
-          zIndex: 0,
-        }}
-      />
+/* ═══════ Professional Overlapping Rectangular Frame ═══════ */
+function OverlappingFrame({ src, alt, src2, categoryKey }: { src: string; alt: string; src2?: string; categoryKey?: string }) {
+  const isGreen = categoryKey === 'supplements';
+  const blockBg = isGreen ? 'bg-[#F2E5D7] border border-[#2D4233]/15' : 'bg-[#EEF2FF] border border-[#1E3A8A]/15';
+  const rectBorder = isGreen ? 'border-[#2D4233]' : 'border-[#1E3A8A]';
+  const subBorder = isGreen ? 'border-white' : 'border-[#FDD229]';
 
-      {/* Main image rectangle */}
-      <div className="relative overflow-hidden" style={{ width: '80%', height: '380px', borderRadius: '6px', zIndex: 1 }}>
+  // In new design, shuffle frame layer placements (invert orientation)
+  const isNewDesign = !isGreen;
+  const blockPos = isNewDesign ? 'bottom-0 right-0' : 'bottom-0 left-0';
+  const mainImagePos = isNewDesign ? 'bottom-6 right-8' : 'bottom-6 left-8';
+  const ringPos = isNewDesign ? 'top-0 left-0' : 'top-0 right-0';
+  const subPos = isNewDesign ? '-bottom-2 -left-2' : '-bottom-2 -right-2';
+
+  return (
+    <div className="relative w-full max-w-[480px] aspect-[4/3.5] min-h-[380px] sm:min-h-[440px] mx-auto select-none">
+      
+      {/* 1. Soft Rectangular Base */}
+      <div className={`absolute w-[62%] h-[60%] rounded-2xl ${blockBg} ${blockPos} z-0`} />
+
+      {/* 2. Main Rectangular Image */}
+      <div className={`absolute w-[82%] h-[84%] rounded-xl overflow-hidden shadow-lg border border-black/5 ${mainImagePos} z-10 group`}>
         <img
           src={src}
           alt={alt}
-          className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 ease-out"
           onError={(e) => {
             if (e.currentTarget.src !== DEFAULT_FALLBACK_IMG) {
               e.currentTarget.src = DEFAULT_FALLBACK_IMG;
@@ -178,25 +155,16 @@ function OverlappingFrame({ src, alt, src2 }: { src: string; alt: string; src2?:
         />
       </div>
 
-      {/* Second overlapping image — bottom right */}
+      {/* 3. Front Dark Rectangular Outline Ring */}
+      <div className={`absolute w-[82%] h-[84%] rounded-xl border-[3.5px] ${rectBorder} pointer-events-none ${ringPos} z-20`} />
+
+      {/* 4. Optional Overlapping Secondary Image */}
       {src2 && (
-        <div
-          className="absolute overflow-hidden"
-          style={{
-            width: '45%',
-            height: '220px',
-            borderRadius: '6px',
-            border: '5px solid white',
-            boxShadow: '0 8px 30px rgba(0,0,0,0.12)',
-            bottom: '0',
-            right: '0',
-            zIndex: 2,
-          }}
-        >
+        <div className={`absolute ${subPos} w-[45%] aspect-4/3 rounded-xl overflow-hidden border-4 ${subBorder} shadow-2xl z-35 group hover:scale-105 transition-transform duration-300`}>
           <img
             src={src2}
             alt="overlay"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
             onError={(e) => {
               if (e.currentTarget.src !== DEFAULT_FALLBACK_IMG) {
                 e.currentTarget.src = DEFAULT_FALLBACK_IMG;
@@ -205,6 +173,7 @@ function OverlappingFrame({ src, alt, src2 }: { src: string; alt: string; src2?:
           />
         </div>
       )}
+
     </div>
   );
 }
@@ -242,6 +211,27 @@ export const SubcategoryDetail: React.FC<SubcategoryDetailProps> = ({
   const anim = (v: boolean, dir: 'up' | 'left' | 'right' = 'up') =>
     v ? `animate-fade-in-${dir}` : 'opacity-0';
 
+  const isSupplements = subData.categoryKey === 'supplements';
+  const primaryColor = isSupplements ? '#384E3C' : '#1E3A8A';
+  const heroGradient = isSupplements
+    ? 'bg-gradient-to-r from-[#1B271E] via-[#253229] via-[#292A44]/80 to-[#152017]'
+    : 'bg-gradient-to-r from-[#0B132B] via-[#1E295D] via-[#1E3A8A] to-[#0A0F24]';
+  const ctaGradient = isSupplements
+    ? 'bg-gradient-to-br from-[#1E2B20] via-[#2A3E2E] to-[#162017]'
+    : 'bg-gradient-to-br from-[#0B132B] via-[#1E295D] to-[#0A0F24]';
+  const section3Bg = isSupplements ? 'bg-[#F2E5D7] border-y border-[#384E3C]/15' : 'bg-[#F8FAFC] border-y border-[#1E3A8A]/15';
+  const tableSectionBg = isSupplements ? 'bg-[#F2E5D7] border-b border-[#384E3C]/15' : 'bg-[#EEF2FF] border-b border-[#1E3A8A]/15';
+  const usageBg = isSupplements ? 'bg-[#F2E5D7] border-t border-[#384E3C]/15' : 'bg-[#F8FAFC] border-t border-[#1E3A8A]/15';
+  const darkSectionBg = isSupplements
+    ? 'bg-gradient-to-br from-[#162017] via-[#1E2B20] to-[#162017]'
+    : 'bg-gradient-to-br from-[#0B132B] via-[#1E295D] to-[#0A0F24]';
+  const reviewsBg = isSupplements
+    ? 'bg-gradient-to-br from-[#162017] via-[#233226] to-[#162017]'
+    : 'bg-gradient-to-br from-[#0B132B] via-[#1E295D] to-[#0A0F24]';
+  const bottomCtaBg = isSupplements
+    ? 'bg-gradient-to-r from-[#293B2D] via-[#384E3C] to-[#293B2D]'
+    : 'bg-gradient-to-r from-[#0B132B] via-[#1E3A8A] to-[#0B132B]';
+
   return (
     <div className="bg-[#FBFCFC] min-h-screen overflow-x-hidden" style={{ fontFamily: "'DM Sans', 'Poppins', system-ui, sans-serif" }}>
 
@@ -257,9 +247,9 @@ export const SubcategoryDetail: React.FC<SubcategoryDetailProps> = ({
       <div className="bg-[#FBFCFC] border-b border-[#E2E8F0]">
         <div className="max-w-[1240px] mx-auto px-5 py-3">
           <div className="flex items-center gap-1.5 text-xs text-[#64748B]">
-            <Link to="/" className="hover:text-[#384E3C] transition-colors">Home</Link>
+            <Link to="/" className="hover:text-[#1E3A8A] transition-colors">Home</Link>
             <ChevronRight className="w-3 h-3 opacity-40" />
-            <Link to={`/${subData.categoryKey}`} className="hover:text-[#384E3C] transition-colors">{subData.categoryTitle}</Link>
+            <Link to={`/${subData.categoryKey}`} className="hover:text-[#1E3A8A] transition-colors">{subData.categoryTitle}</Link>
             <ChevronRight className="w-3 h-3 opacity-40" />
             <span className="font-semibold" style={{ color: '#2A2A2A' }}>{subData.title}</span>
           </div>
@@ -267,12 +257,12 @@ export const SubcategoryDetail: React.FC<SubcategoryDetailProps> = ({
       </div>
 
       {/* ════════════════════════════════════════════════════════════
-          1. HERO — Slate Green & Subtle Dark Slate Blue (#483D8B) Ambient Glow
+          1. HERO — Dynamic Theme Based on Category
       ════════════════════════════════════════════════════════════ */}
-      <section ref={s1.ref} className="relative overflow-hidden bg-gradient-to-r from-[#1B271E] via-[#253229] via-[#292A44]/80 to-[#152017] text-[#FBFCFC] py-16 lg:py-24">
+      <section ref={s1.ref} className={`relative overflow-hidden ${heroGradient} text-[#FBFCFC] py-16 lg:py-24`}>
         {/* Ambient Glow Spots */}
         <div className="absolute top-1/4 -left-20 w-96 h-96 bg-[#FDD229]/20 rounded-full filter blur-3xl pointer-events-none" />
-        <div className="absolute bottom-10 right-0 w-96 h-96 bg-[#483D8B]/35 rounded-full filter blur-3xl pointer-events-none" />
+        <div className="absolute bottom-10 right-0 w-96 h-96 bg-[#2563EB]/25 rounded-full filter blur-3xl pointer-events-none" />
 
         <div className="relative z-10 max-w-[1240px] mx-auto px-5">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
@@ -362,7 +352,7 @@ export const SubcategoryDetail: React.FC<SubcategoryDetailProps> = ({
       </section>
 
       {/* ═══════════ 2. TRUST BADGES ═══════════ */}
-      <section style={{ backgroundColor: '#384E3C' }}>
+      <section style={{ backgroundColor: primaryColor }}>
         <div className="max-w-[1240px] mx-auto px-5 py-7">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
             {[
@@ -381,22 +371,37 @@ export const SubcategoryDetail: React.FC<SubcategoryDetailProps> = ({
         </div>
       </section>
 
-      {/* ═══════════ 3. SECTION — Text Left + Overlapping Frame Right ═══════════ */}
-      <section ref={s2.ref} className="relative overflow-hidden bg-[#FAF8F4] border-y border-[#3D5A45]/10">
-        {/* Background Mountain Harvest Texture */}
-        <div className="absolute inset-0 pointer-events-none opacity-[0.08] mix-blend-multiply">
-          <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&q=80&w=1600" alt="" className="w-full h-full object-cover filter contrast-125" />
-        </div>
-        {/* Watermark Text */}
-        <div className="absolute left-6 top-1/2 -translate-y-1/2 text-[120px] lg:text-[180px] font-serif font-bold text-[#C9962F]/[0.05] select-none pointer-events-none uppercase tracking-widest leading-none hidden lg:block">
-          HARVEST
-        </div>
+      {/* ═══════════ 3. SECTION — Overlapping Frame Left + Text Right (ZIG-ZAG ALTERNATING) ═══════════ */}
+      <section ref={s2.ref} className={`relative overflow-hidden ${section3Bg}`}>
+        {/* Ambient Top Radial Soft Lighting */}
+        <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-[#1E3A8A]/10 via-transparent to-transparent" />
 
         <div className="relative z-10 max-w-[1240px] mx-auto px-5 py-20 lg:py-28">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-            <div className={`space-y-5 ${anim(s2.visible, 'left')}`}>
-              <span className="text-[11px] uppercase font-bold tracking-[3px]" style={{ color: '#C9962F' }}>100% Organic Sourcing</span>
-              <h2 className="text-3xl sm:text-[38px] font-bold leading-[1.15]" style={{ color: '#2A2A2A', fontFamily: "'Poppins', sans-serif" }}>
+            
+            {/* Image Showcase Left */}
+            <div className={`order-2 lg:order-1 ${anim(s2.visible, 'left')}`}>
+              {isSupplements ? (
+                <OverlappingFrame
+                  src={g[1]?.url || subData.heroImage}
+                  alt={subData.title}
+                  src2={g[2]?.url}
+                  categoryKey={subData.categoryKey}
+                />
+              ) : (
+                <DecorativeFrame
+                  src={g[1]?.url || subData.heroImage}
+                  alt={subData.title}
+                  small={g[2]?.url}
+                  categoryKey={subData.categoryKey}
+                />
+              )}
+            </div>
+
+            {/* Text Copy Right */}
+            <div className={`order-1 lg:order-2 space-y-5 ${anim(s2.visible, 'right')}`}>
+              <span className="text-[11px] uppercase font-bold tracking-[3px]" style={{ color: '#9E711A' }}>100% Organic Sourcing</span>
+              <h2 className="text-3xl sm:text-[38px] font-bold leading-[1.15]" style={{ color: '#1E293B', fontFamily: "'Poppins', sans-serif" }}>
                 Pure Mountain-Grade Harvest From {subData.origin}
               </h2>
               <p className="text-base sm:text-lg leading-relaxed text-[#334155]">{subData.extendedHistory}</p>
@@ -407,7 +412,7 @@ export const SubcategoryDetail: React.FC<SubcategoryDetailProps> = ({
                   `Active Bio-Compounds: ${subData.activeCompounds}`
                 ].map((item, i) => (
                   <li key={i} className="flex items-start gap-3 text-base font-semibold text-[#1E293B]">
-                    <CheckCircle2 className="w-5 h-5 shrink-0 mt-0.5 text-[#3D5A45]" /> <span>{item}</span>
+                    <CheckCircle2 className="w-5 h-5 shrink-0 mt-0.5" style={{ color: primaryColor }} /> <span>{item}</span>
                   </li>
                 ))}
               </ul>
@@ -417,13 +422,7 @@ export const SubcategoryDetail: React.FC<SubcategoryDetailProps> = ({
                 </button>
               </a>
             </div>
-            <div className={`${anim(s2.visible, 'right')}`}>
-              <OverlappingFrame
-                src={g[1]?.url || subData.heroImage}
-                alt={subData.title}
-                src2={g[2]?.url}
-              />
-            </div>
+
           </div>
         </div>
       </section>
@@ -432,14 +431,14 @@ export const SubcategoryDetail: React.FC<SubcategoryDetailProps> = ({
       <section ref={s9.ref} id="catalog" className="bg-[#FBFCFC]">
         <div className={`max-w-[1240px] mx-auto px-5 py-20 lg:py-28 ${anim(s9.visible)}`}>
           <div className="text-center mb-14">
-            <div className="inline-flex items-center gap-2 bg-[#384E3C] text-white px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-widest mb-4 shadow-md border border-white/20">
+            <div className="inline-flex items-center gap-2 bg-[#1E3A8A] text-white px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-widest mb-4 shadow-md border border-white/20">
               <ShieldCheck className="w-4 h-4 text-[#FDD229]" />
               <span>PCSIR Lab Certified & Verified Products</span>
             </div>
             <span className="text-[11px] uppercase font-bold tracking-[3px] block mb-3 text-[#FDD229]">Product Catalog</span>
             <h2 className="text-3xl sm:text-[38px] font-bold text-[#1E293B]" style={{ fontFamily: "'Poppins', sans-serif" }}>{subData.title} Collection</h2>
             <p className="text-base sm:text-lg font-semibold text-[#1E293B] mt-3 flex items-center justify-center gap-2">
-              <Award className="w-5 h-5 text-[#384E3C]" />
+              <Award className="w-5 h-5 text-[#1E3A8A]" />
               <span>All products certified for 0.00% Heavy Metals & 100% Organic Purity</span>
             </p>
           </div>
@@ -451,27 +450,16 @@ export const SubcategoryDetail: React.FC<SubcategoryDetailProps> = ({
         </div>
       </section>
 
-      {/* ═══════════ 5. SECTION — Arch Frame Left + Text Right (REVERSED) ═══════════ */}
-      <section ref={s4.ref} className="relative overflow-hidden bg-white border-y border-[#3D5A45]/10">
-        {/* Background Landscape Texture */}
-        <div className="absolute inset-0 pointer-events-none opacity-[0.08] mix-blend-multiply">
-          <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&q=80&w=1600" alt="" className="w-full h-full object-cover filter contrast-125" />
-        </div>
-        <div className="absolute right-10 top-1/2 -translate-y-1/2 text-[140px] font-serif font-bold text-[#3D5A45]/[0.05] select-none pointer-events-none uppercase tracking-widest hidden lg:block">
-          HERITAGE
-        </div>
+      {/* ═══════════ 5. SECTION — Text Left + Arch Frame Right (ZIG-ZAG ALTERNATING) ═══════════ */}
+      <section ref={s4.ref} className="relative overflow-hidden bg-[#FBF9F4] border-y border-black/10">
+        {/* Ambient Bottom-Left Radial Gold Tint */}
+        <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-[#FDD229]/15 via-transparent to-transparent" />
 
         <div className="relative z-10 max-w-[1240px] mx-auto px-5 py-20 lg:py-28">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center">
-            <div className={`order-2 lg:order-1 ${anim(s4.visible, 'left')}`}>
-              <DecorativeFrame
-                src={g[2]?.url || subData.heroImage}
-                alt={subData.title}
-                small={g[3]?.url}
-                reverse
-              />
-            </div>
-            <div className={`order-1 lg:order-2 space-y-5 ${anim(s4.visible, 'right')}`}>
+            
+            {/* Text Copy Left */}
+            <div className={`order-1 lg:order-1 space-y-5 ${anim(s4.visible, 'left')}`}>
               <span className="text-xs font-bold uppercase tracking-[3px] text-[#FDD229]">Heritage & Terroir</span>
               <h2 className="text-3xl sm:text-[38px] font-bold leading-[1.15] text-[#1E293B]" style={{ fontFamily: "'Poppins', sans-serif" }}>
                 Centuries-Old Botanical Wisdom, Modern Purity
@@ -488,12 +476,32 @@ export const SubcategoryDetail: React.FC<SubcategoryDetailProps> = ({
                 ))}
               </div>
             </div>
+
+            {/* Image Showcase Right */}
+            <div className={`order-2 lg:order-2 ${anim(s4.visible, 'right')}`}>
+              {isSupplements ? (
+                <DecorativeFrame
+                  src={g[2]?.url || subData.heroImage}
+                  alt={subData.title}
+                  small={g[3]?.url}
+                  categoryKey={subData.categoryKey}
+                />
+              ) : (
+                <OverlappingFrame
+                  src={g[2]?.url || subData.heroImage}
+                  alt={subData.title}
+                  src2={g[3]?.url}
+                  categoryKey={subData.categoryKey}
+                />
+              )}
+            </div>
+
           </div>
         </div>
       </section>
 
       {/* ═══════════ 6. STATS COUNTER BAR ═══════════ */}
-      <section ref={s5.ref} style={{ backgroundColor: '#2A2A2A' }}>
+      <section ref={s5.ref} style={{ backgroundColor: '#162017' }}>
         <div className="max-w-[1240px] mx-auto px-5 py-16 lg:py-20">
           <div className={`grid grid-cols-2 md:grid-cols-4 gap-8 text-center ${anim(s5.visible)}`}>
             {[
@@ -506,7 +514,7 @@ export const SubcategoryDetail: React.FC<SubcategoryDetailProps> = ({
                 <div className="text-3xl sm:text-4xl font-bold text-[#FDD229]" style={{ fontFamily: "'Poppins', sans-serif" }}>
                   {s5.visible ? <AnimatedCounter end={s.num} suffix={s.suffix} /> : `0${s.suffix}`}
                 </div>
-                <span className="text-[11px] mt-2 block uppercase tracking-[2px] font-medium" style={{ color: 'rgba(255,255,255,0.45)' }}>{s.label}</span>
+                <span className="text-[11px] mt-2 block uppercase tracking-[2px] font-medium text-white/60">{s.label}</span>
               </div>
             ))}
           </div>
@@ -514,16 +522,14 @@ export const SubcategoryDetail: React.FC<SubcategoryDetailProps> = ({
       </section>
 
       {/* ═══════════ 7. BENEFITS — Grid Cards ═══════════ */}
-      <section ref={s6.ref} className="relative overflow-hidden bg-gradient-to-b from-[#FBFCFC] to-[#FBFCFC]">
-        {/* Background Botanical Texture */}
-        <div className="absolute inset-0 pointer-events-none opacity-[0.08] mix-blend-multiply">
-          <img src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&q=80&w=1600" alt="" className="w-full h-full object-cover filter contrast-125" />
-        </div>
+      <section ref={s6.ref} className="relative overflow-hidden bg-gradient-to-b from-[#FBFCFC] via-[#F7F9F7] to-[#FBFCFC]">
+        {/* Ambient Center Botanical Glow */}
+        <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-[#1E3A8A]/5 via-transparent to-transparent" />
 
         <div className="relative z-10 max-w-[1240px] mx-auto px-5 py-20 lg:py-28">
           <div className={`text-center mb-14 ${anim(s6.visible)}`}>
             <span className="text-[11px] uppercase font-bold tracking-[3px] block mb-3 text-[#FDD229]">Health Benefits</span>
-            <h2 className="text-3xl sm:text-[38px] font-bold" style={{ color: '#2A2A2A', fontFamily: "'Poppins', sans-serif" }}>Why Choose Barn.pk {subData.title}?</h2>
+            <h2 className="text-3xl sm:text-[38px] font-bold" style={{ color: '#0F172A', fontFamily: "'Poppins', sans-serif" }}>Why Choose Barn.pk {subData.title}?</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-0 border border-gray-200" style={{ borderRadius: '6px', overflow: 'hidden' }}>
             {subData.keyBenefits.map((benefit, idx) => {
@@ -539,7 +545,7 @@ export const SubcategoryDetail: React.FC<SubcategoryDetailProps> = ({
                     animationDelay: `${idx * 80}ms`,
                   }}
                 >
-                  <div className="w-12 h-12 flex items-center justify-center mb-5 bg-[#384E3C] rounded-md">
+                  <div className="w-12 h-12 flex items-center justify-center mb-5 bg-[#1E3A8A] rounded-md">
                     <Icon className="w-5 h-5 text-white group-hover:scale-110 transition-transform" />
                   </div>
                   <h3 className="text-lg font-bold mb-2 text-[#1E293B]" style={{ fontFamily: "'Poppins', sans-serif" }}>{benefit.title}</h3>
@@ -551,12 +557,12 @@ export const SubcategoryDetail: React.FC<SubcategoryDetailProps> = ({
         </div>
       </section>
 
-      {/* ═══════════ 8. CTA — Dark Banner with Bg Image ═══════════ */}
-      <section className="relative overflow-hidden bg-[#2A2A2A]">
-        <div className="absolute inset-0 opacity-[0.07]"><img src={g[3]?.url || subData.heroImage} alt="" className="w-full h-full object-cover" /></div>
+      {/* ═══════════ 8. CTA — Luxury Banner ═══════════ */}
+      <section className={`relative overflow-hidden ${ctaGradient} border-y border-[#FDD229]/20`}>
+        <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-[#FDD229]/15 via-transparent to-transparent" />
         <div className="relative max-w-[800px] mx-auto px-5 py-20 lg:py-28 text-center">
           <h2 className="text-3xl sm:text-[40px] font-bold text-white mb-5 leading-tight" style={{ fontFamily: "'Poppins', sans-serif" }}>Our Ironclad Purity Promise</h2>
-          <p className="text-sm leading-[1.85] mb-8" style={{ color: 'rgba(255,255,255,0.55)' }}>
+          <p className="text-sm leading-[1.85] mb-8 text-white/80">
             Every batch undergoes rigorous independent laboratory testing at PCSIR-certified facilities. We test for heavy metals, microbial contamination, pesticide residues, and bioactive compound potency.
           </p>
           <div className="flex flex-wrap gap-3 justify-center">
@@ -574,23 +580,23 @@ export const SubcategoryDetail: React.FC<SubcategoryDetailProps> = ({
 
       {/* ═══════════ 9. COMPARISON TABLE ═══════════ */}
       {subData.comparisonData && subData.comparisonData.length > 0 && (
-        <section ref={s7.ref} className="bg-[#FBFCFC]">
+        <section ref={s7.ref} className={`${tableSectionBg}`}>
           <div className={`max-w-[900px] mx-auto px-5 py-20 lg:py-28 ${anim(s7.visible)}`}>
             <div className="text-center mb-12">
-              <span className="text-[11px] uppercase font-bold tracking-[3px] block mb-3 text-[#FDD229]">Quality Transparency</span>
+              <span className="text-[11px] uppercase font-bold tracking-[3px] block mb-3 text-[#9E711A]">Quality Transparency</span>
               <h2 className="text-3xl sm:text-[38px] font-bold text-[#1E293B]" style={{ fontFamily: "'Poppins', sans-serif" }}>Barn.pk vs Commercial Brands</h2>
             </div>
-            <div className="overflow-hidden bg-[#FBFCFC]" style={{ borderRadius: '6px', border: '1px solid #E8E4DC' }}>
-              <div className="grid grid-cols-12 text-sm sm:text-base font-bold uppercase tracking-[1.5px] p-5 bg-[#384E3C] text-white">
+            <div className="overflow-hidden bg-white shadow-md" style={{ borderRadius: '12px', border: '1px solid #D8C8B8' }}>
+              <div className="grid grid-cols-12 text-sm sm:text-base font-bold uppercase tracking-[1.5px] p-5 bg-[#1E3A8A] text-white">
                 <div className="col-span-4">Quality Metric</div>
                 <div className="col-span-4 text-[#FDD229]">Barn.pk Standard</div>
                 <div className="col-span-4 text-white/80">Commercial</div>
               </div>
               {subData.comparisonData.map((row, idx) => (
-                <div key={idx} className="grid grid-cols-12 p-4 items-center border-b border-gray-100 last:border-0 text-base hover:bg-[#FBFCFC] transition-colors" style={{ backgroundColor: idx % 2 === 0 ? '#FBFCFC' : '#F7F9F8' }}>
+                <div key={idx} className="grid grid-cols-12 p-4 items-center border-b border-gray-100 last:border-0 text-base hover:bg-[#FDFBF7] transition-colors" style={{ backgroundColor: idx % 2 === 0 ? '#FFFFFF' : '#FAF6F0' }}>
                   <div className="col-span-4 font-bold text-[#1E293B]">{row.feature}</div>
-                  <div className="col-span-4 flex items-center gap-2 font-semibold text-[#384E3C]">
-                    <CheckCircle2 className="w-4 h-4 shrink-0 text-[#384E3C]" /> <span>{row.barnStandard}</span>
+                  <div className="col-span-4 flex items-center gap-2 font-semibold text-[#1E3A8A]">
+                    <CheckCircle2 className="w-4 h-4 shrink-0 text-[#1E3A8A]" /> <span>{row.barnStandard}</span>
                   </div>
                   <div className="col-span-4 italic text-[#475569] font-medium">{row.commercialBrand}</div>
                 </div>
@@ -600,17 +606,38 @@ export const SubcategoryDetail: React.FC<SubcategoryDetailProps> = ({
         </section>
       )}
 
-      {/* ═══════════ 10. HOW TO USE — Text Left + Overlapping Frame Right ═══════════ */}
+      {/* ═══════════ 10. HOW TO USE — Overlapping Frame Left + Text Right (ZIG-ZAG ALTERNATING) ═══════════ */}
       <section ref={s8.ref} className="bg-[#FBFCFC]">
         <div className="max-w-[1240px] mx-auto px-5 py-20 lg:py-28">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-            <div className={`space-y-6 ${anim(s8.visible, 'left')}`}>
+            
+            {/* Image Showcase Left */}
+            <div className={`order-2 lg:order-1 ${anim(s8.visible, 'left')}`}>
+              {isSupplements ? (
+                <OverlappingFrame
+                  src={g[3]?.url || g[0]?.url || subData.heroImage}
+                  alt="Usage"
+                  src2={g[4]?.url}
+                  categoryKey={subData.categoryKey}
+                />
+              ) : (
+                <DecorativeFrame
+                  src={g[3]?.url || g[0]?.url || subData.heroImage}
+                  alt="Usage"
+                  small={g[4]?.url}
+                  categoryKey={subData.categoryKey}
+                />
+              )}
+            </div>
+
+            {/* Steps Text Right */}
+            <div className={`order-1 lg:order-2 space-y-6 ${anim(s8.visible, 'right')}`}>
               <span className="text-[11px] uppercase font-bold tracking-[3px] text-[#FDD229]">Step-by-Step Guide</span>
-              <h2 className="text-3xl sm:text-[38px] font-bold leading-[1.15]" style={{ color: '#2A2A2A', fontFamily: "'Poppins', sans-serif" }}>How to Use {subData.title}</h2>
+              <h2 className="text-3xl sm:text-[38px] font-bold leading-[1.15]" style={{ color: '#0F172A', fontFamily: "'Poppins', sans-serif" }}>How to Use {subData.title}</h2>
               <div className="space-y-0">
                 {subData.howToUseSteps.map((step, idx) => (
                   <div key={idx} className="flex gap-5 items-start group py-5" style={{ borderBottom: '1px solid #F0EDE7' }}>
-                    <div className="w-11 h-11 flex items-center justify-center text-base font-bold text-white shrink-0 bg-[#384E3C] rounded-md" style={{ fontFamily: "'Poppins', sans-serif" }}>{step.step}</div>
+                    <div className="w-11 h-11 flex items-center justify-center text-base font-bold text-white shrink-0 rounded-md shadow-sm" style={{ backgroundColor: primaryColor, fontFamily: "'Poppins', sans-serif" }}>{step.step}</div>
                     <div className="space-y-1.5 flex-1">
                       <h4 className="text-base sm:text-lg font-bold text-[#1E293B]">{step.title}</h4>
                       <p className="text-base leading-relaxed text-[#334155]">{step.desc}</p>
@@ -619,26 +646,20 @@ export const SubcategoryDetail: React.FC<SubcategoryDetailProps> = ({
                 ))}
               </div>
             </div>
-            <div className={`${anim(s8.visible, 'right')}`}>
-              <OverlappingFrame
-                src={g[3]?.url || g[0]?.url || subData.heroImage}
-                alt="Usage"
-                src2={g[4]?.url}
-              />
-            </div>
+
           </div>
         </div>
       </section>
 
       {/* ═══════════ 11. BENTO MASONRY GALLERY GRID ═══════════ */}
-      <section ref={s3.ref} id="gallery" className="py-20 lg:py-28 bg-[#FBF9F4] border-t border-[#2D4233]/10 relative overflow-hidden">
+      <section ref={s3.ref} id="gallery" className="py-20 lg:py-28 bg-[#FBF9F4] border-t border-[#1E3A8A]/10 relative overflow-hidden">
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className={`text-center mb-14 ${anim(s3.visible)}`}>
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#2D4233]/10 text-[#2D4233] text-xs font-bold uppercase tracking-wider mb-3">
-              <BarnRoofMotif color="#2D4233" height={12} />
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#1E3A8A]/10 text-[#1E3A8A] text-xs font-bold uppercase tracking-wider mb-3">
+              <BarnRoofMotif color="#1E3A8A" height={12} />
               <span>{subData.galleryTitle}</span>
             </div>
-            <h2 className="text-3xl sm:text-[40px] font-bold text-[#1C241D]" style={{ fontFamily: "'Poppins', sans-serif" }}>
+            <h2 className="text-3xl sm:text-[40px] font-bold text-[#0F172A]" style={{ fontFamily: "'Poppins', sans-serif" }}>
               Our Premium Showcase Gallery
             </h2>
             <p className="text-base text-[#64748B] mt-2 max-w-md mx-auto">
@@ -646,240 +667,272 @@ export const SubcategoryDetail: React.FC<SubcategoryDetailProps> = ({
             </p>
           </div>
 
-          {/* Asymmetrical Bento-Box Grid Layout matching reference image */}
-          <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-5 ${anim(s3.visible)}`}>
+          {/* Ultra-Clean Bento Showcase Gallery Grid */}
+          <div className={`grid grid-cols-1 lg:grid-cols-12 gap-5 ${anim(s3.visible)}`}>
             
-            {/* 1. Left Tall Vertical Frame */}
-            {g[0] && (
-              <div 
-                className="lg:col-span-4 lg:row-span-2 group relative overflow-hidden rounded-2xl bg-[#162017] cursor-pointer shadow-md hover:shadow-2xl hover:-translate-y-1 transition-all duration-500 border border-[#2D4233]/15 min-h-[340px] lg:min-h-[500px]"
-                onClick={() => setLightboxImg(g[0].url)}
-              >
-                <img
-                  src={g[0].url}
-                  alt={g[0].caption}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 ease-out"
-                  onError={(e) => {
-                    if (e.currentTarget.src !== DEFAULT_FALLBACK_IMG) {
-                      e.currentTarget.src = DEFAULT_FALLBACK_IMG;
-                    }
-                  }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300" />
-                <div className="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:scale-110">
-                  <Eye className="w-4 h-4" />
-                </div>
-                <div className="absolute bottom-5 left-5 right-5 text-white">
-                  <span className="inline-block text-[10px] font-bold uppercase tracking-widest text-[#FDD229] mb-1">Terroir Showcase</span>
-                  <h3 className="font-serif text-lg font-bold drop-shadow-md">{g[0].caption}</h3>
-                </div>
-              </div>
-            )}
-
-            {/* 2. Top Middle Wide Panorama Banner */}
-            {g[1] && (
-              <div 
-                className="lg:col-span-8 group relative overflow-hidden rounded-2xl bg-[#162017] cursor-pointer shadow-md hover:shadow-2xl hover:-translate-y-1 transition-all duration-500 border border-[#2D4233]/15 min-h-[220px] lg:min-h-[240px]"
-                onClick={() => setLightboxImg(g[1].url)}
-              >
-                <img
-                  src={g[1].url}
-                  alt={g[1].caption}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 ease-out"
-                  onError={(e) => {
-                    if (e.currentTarget.src !== DEFAULT_FALLBACK_IMG) {
-                      e.currentTarget.src = DEFAULT_FALLBACK_IMG;
-                    }
-                  }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300" />
-                <div className="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:scale-110">
-                  <Eye className="w-4 h-4" />
-                </div>
-                <div className="absolute bottom-5 left-5 right-5 text-white">
-                  <span className="inline-block text-[10px] font-bold uppercase tracking-widest text-[#FDD229] mb-1">Mountain Origin</span>
-                  <h3 className="font-serif text-lg font-bold drop-shadow-md">{g[1].caption}</h3>
-                </div>
-              </div>
-            )}
-
-            {/* 3. Center Middle Card */}
+            {/* 1. Left Column: Primary Expanded Full-Height Hero Feature Image (g[2]) */}
             {g[2] && (
               <div 
-                className="lg:col-span-4 group relative overflow-hidden rounded-2xl bg-[#162017] cursor-pointer shadow-md hover:shadow-2xl hover:-translate-y-1 transition-all duration-500 border border-[#2D4233]/15 min-h-[220px] lg:min-h-[240px]"
+                className="lg:col-span-5 group relative overflow-hidden rounded-2xl bg-[#0F172A] cursor-pointer shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-500 border border-[#1E3A8A]/15 h-full min-h-[480px] sm:min-h-[500px] flex flex-col justify-end"
                 onClick={() => setLightboxImg(g[2].url)}
               >
                 <img
                   src={g[2].url}
                   alt={g[2].caption}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 ease-out"
+                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-108 transition-transform duration-1000 ease-out"
                   onError={(e) => {
                     if (e.currentTarget.src !== DEFAULT_FALLBACK_IMG) {
                       e.currentTarget.src = DEFAULT_FALLBACK_IMG;
                     }
                   }}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent opacity-85 group-hover:opacity-95 transition-opacity duration-300" />
                 <div className="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:scale-110">
                   <Eye className="w-4 h-4" />
                 </div>
-                <div className="absolute bottom-5 left-5 right-5 text-white">
-                  <span className="inline-block text-[10px] font-bold uppercase tracking-widest text-[#FDD229] mb-1">Pure Processing</span>
-                  <h3 className="font-serif text-lg font-bold drop-shadow-md">{g[2].caption}</h3>
+                <div className="relative z-10 p-6 sm:p-7 text-white space-y-1.5">
+                  <span className="inline-block text-xs font-bold uppercase tracking-widest text-[#FDD229] px-3 py-1 rounded-full bg-[#1E3A8A]/80 backdrop-blur-md border border-white/20">
+                    Primary Harvest Process
+                  </span>
+                  <h3 className="font-serif text-xl sm:text-2xl font-bold drop-shadow-md text-white">{g[2].caption}</h3>
                 </div>
               </div>
             )}
 
-            {/* 4. Right Tall Vertical Tower Frame */}
-            {g[3] && (
-              <div 
-                className="lg:col-span-4 lg:row-span-2 group relative overflow-hidden rounded-2xl bg-[#162017] cursor-pointer shadow-md hover:shadow-2xl hover:-translate-y-1 transition-all duration-500 border border-[#2D4233]/15 min-h-[340px] lg:min-h-[500px]"
-                onClick={() => setLightboxImg(g[3].url)}
-              >
-                <img
-                  src={g[3].url}
-                  alt={g[3].caption}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 ease-out"
-                  onError={(e) => {
-                    if (e.currentTarget.src !== DEFAULT_FALLBACK_IMG) {
-                      e.currentTarget.src = DEFAULT_FALLBACK_IMG;
-                    }
-                  }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300" />
-                <div className="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:scale-110">
-                  <Eye className="w-4 h-4" />
-                </div>
-                <div className="absolute bottom-5 left-5 right-5 text-white">
-                  <span className="inline-block text-[10px] font-bold uppercase tracking-widest text-[#FDD229] mb-1">Botanical Harvest</span>
-                  <h3 className="font-serif text-lg font-bold drop-shadow-md">{g[3].caption}</h3>
-                </div>
-              </div>
-            )}
-
-            {/* 5. Bottom Center Left Card */}
-            {g[4] && (
-              <div 
-                className="lg:col-span-4 group relative overflow-hidden rounded-2xl bg-[#162017] cursor-pointer shadow-md hover:shadow-2xl hover:-translate-y-1 transition-all duration-500 border border-[#2D4233]/15 min-h-[220px] lg:min-h-[240px]"
-                onClick={() => setLightboxImg(g[4].url)}
-              >
-                <img
-                  src={g[4].url}
-                  alt={g[4].caption}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 ease-out"
-                  onError={(e) => {
-                    if (e.currentTarget.src !== DEFAULT_FALLBACK_IMG) {
-                      e.currentTarget.src = DEFAULT_FALLBACK_IMG;
-                    }
-                  }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300" />
-                <div className="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:scale-110">
-                  <Eye className="w-4 h-4" />
-                </div>
-                <div className="absolute bottom-5 left-5 right-5 text-white">
-                  <span className="inline-block text-[10px] font-bold uppercase tracking-widest text-[#FDD229] mb-1">Wellness Integration</span>
-                  <h3 className="font-serif text-lg font-bold drop-shadow-md">{g[4].caption}</h3>
-                </div>
-              </div>
-            )}
-
-            {/* 6. Bottom Center Right Card */}
-            {g[5] && (
-              <div 
-                className="lg:col-span-4 group relative overflow-hidden rounded-2xl bg-[#162017] cursor-pointer shadow-md hover:shadow-2xl hover:-translate-y-1 transition-all duration-500 border border-[#2D4233]/15 min-h-[220px] lg:min-h-[240px]"
-                onClick={() => setLightboxImg(g[5].url)}
-              >
-                <img
-                  src={g[5].url}
-                  alt={g[5].caption}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 ease-out"
-                  onError={(e) => {
-                    if (e.currentTarget.src !== DEFAULT_FALLBACK_IMG) {
-                      e.currentTarget.src = DEFAULT_FALLBACK_IMG;
-                    }
-                  }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300" />
-                <div className="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:scale-110">
-                  <Eye className="w-4 h-4" />
-                </div>
-                <div className="absolute bottom-5 left-5 right-5 text-white">
-                  <span className="inline-block text-[10px] font-bold uppercase tracking-widest text-[#FDD229] mb-1">Soil Care</span>
-                  <h3 className="font-serif text-lg font-bold drop-shadow-md">{g[5].caption}</h3>
-                </div>
-              </div>
-            )}
-
-          </div>
-        </div>
-      </section>
-
-      {/* ═══════════ 12. DAILY SCHEDULE + RECIPE — Two Column ═══════════ */}
-      <section ref={s10.ref} className="relative overflow-hidden bg-gradient-to-b from-[#FBFCFC] via-white to-[#FBFCFC] border-t border-[#384E3C]/10">
-        {/* Background Kitchen Recipe Texture */}
-        <div className="absolute inset-0 pointer-events-none opacity-[0.08] mix-blend-multiply">
-          <img src="https://images.unsplash.com/photo-1495521821757-a1efb6729352?auto=format&fit=crop&q=80&w=1600" alt="" className="w-full h-full object-cover filter contrast-125" />
-        </div>
-
-        <div className="relative z-10 max-w-[1240px] mx-auto px-5 py-20 lg:py-28">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
-            {/* Daily Schedule */}
-            <div className={`space-y-6 ${anim(s10.visible, 'left')}`}>
-              <span className="text-[11px] uppercase font-bold tracking-[3px] text-[#FDD229]">Daily Protocol</span>
-              <h2 className="text-2xl sm:text-3xl font-bold text-[#1E293B]" style={{ fontFamily: "'Poppins', sans-serif" }}>Optimal Usage Schedule</h2>
-              <div className="space-y-4">
-                {[
-                  { icon: Sunrise, title: 'Morning Protocol', desc: 'Take on an empty stomach 20 minutes before breakfast.', color: '#FDD229' },
-                  { icon: Sun, title: 'Afternoon Boost', desc: 'Add to smoothie or herbal tea for steady energy.', color: '#384E3C' },
-                  { icon: Moon, title: 'Evening Recovery', desc: 'Mix into warm golden milk for deep restorative sleep.', color: '#2A2A2A' }
-                ].map(({ icon: Icon, title, desc, color }, i) => (
-                  <div key={i} className="flex gap-4 items-start p-5 transition-all duration-300 hover:bg-[#FBFCFC] group" style={{ border: '1px solid #F0EDE7', borderRadius: '6px' }}>
-                    <div className="w-10 h-10 flex items-center justify-center shrink-0 rounded-md" style={{ backgroundColor: color }}>
-                      <Icon className={`w-4.5 h-4.5 ${color === '#FDD229' ? 'text-black' : 'text-white'}`} />
-                    </div>
-                    <div>
-                      <h4 className="text-base font-bold mb-1 text-[#1E293B]">{title}</h4>
-                      <p className="text-base leading-relaxed text-[#334155]">{desc}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Recipe */}
-            {subData.recipes && subData.recipes.length > 0 && (
-              <div className={`space-y-6 ${anim(s10.visible, 'right')}`}>
-                <span className="text-[11px] uppercase font-bold tracking-[3px] text-[#FDD229]">Traditional Recipe</span>
-                <h2 className="text-2xl sm:text-3xl font-bold text-[#1E293B]" style={{ fontFamily: "'Poppins', sans-serif" }}>{subData.recipes[0].title}</h2>
-                <div className="p-6 bg-[#FBFCFC]" style={{ border: '1px solid #F0EDE7', borderRadius: '6px' }}>
-                  <h4 className="text-[11px] font-bold uppercase tracking-[2px] mb-4 text-[#FDD229]">Ingredients</h4>
-                  <ul className="space-y-2.5 mb-6">
-                    {subData.recipes[0].ingredients.map((ing, i) => (
-                      <li key={i} className="flex items-center gap-2.5 text-base font-medium text-[#1E293B]">
-                        <CheckCircle2 className="w-4 h-4 shrink-0 text-[#384E3C]" /> <span>{ing}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="pt-5 border-t border-[#F0EDE7]">
-                    <h4 className="text-[11px] font-bold uppercase tracking-[2px] mb-3 text-[#FDD229]">Preparation</h4>
-                    <p className="text-base leading-relaxed text-[#334155]">{subData.recipes[0].instructions}</p>
-                  </div>
-                </div>
-                <div className="overflow-hidden" style={{ borderRadius: '6px' }}>
+            {/* 2. Right Column: Stacked Grid Cards (g[3], g[4], g[5]) */}
+            <div className="lg:col-span-7 flex flex-col gap-5 justify-between">
+              
+              {/* Top Panorama Banner Card (g[3]) */}
+              {g[3] && (
+                <div 
+                  className="group relative overflow-hidden rounded-2xl bg-[#0F172A] cursor-pointer shadow-md hover:shadow-2xl hover:-translate-y-1 transition-all duration-500 border border-[#1E3A8A]/15 h-[235px] flex flex-col justify-end"
+                  onClick={() => setLightboxImg(g[3].url)}
+                >
                   <img
-                    src={g[4]?.url || g[0]?.url || subData.heroImage}
-                    alt="Recipe"
-                    className="w-full h-52 object-cover hover:scale-105 transition-transform duration-700"
+                    src={g[3].url}
+                    alt={g[3].caption}
+                    className="absolute inset-0 w-full h-full object-cover group-hover:scale-108 transition-transform duration-1000 ease-out"
                     onError={(e) => {
                       if (e.currentTarget.src !== DEFAULT_FALLBACK_IMG) {
                         e.currentTarget.src = DEFAULT_FALLBACK_IMG;
                       }
                     }}
                   />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300" />
+                  <div className="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:scale-110">
+                    <Eye className="w-4 h-4" />
+                  </div>
+                  <div className="relative z-10 p-5 text-white">
+                    <span className="inline-block text-[10px] font-bold uppercase tracking-widest text-[#FDD229] mb-0.5">Botanical Harvest</span>
+                    <h3 className="font-serif text-lg font-bold drop-shadow-md text-white">{g[3].caption}</h3>
+                  </div>
+                </div>
+              )}
+
+              {/* Bottom Dual Grid Row (g[4] & g[5]) */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                {g[4] && (
+                  <div 
+                    className="group relative overflow-hidden rounded-2xl bg-[#0F172A] cursor-pointer shadow-md hover:shadow-2xl hover:-translate-y-1 transition-all duration-500 border border-[#1E3A8A]/15 h-[225px] flex flex-col justify-end"
+                    onClick={() => setLightboxImg(g[4].url)}
+                  >
+                    <img
+                      src={g[4].url}
+                      alt={g[4].caption}
+                      className="absolute inset-0 w-full h-full object-cover group-hover:scale-108 transition-transform duration-1000 ease-out"
+                      onError={(e) => {
+                        if (e.currentTarget.src !== DEFAULT_FALLBACK_IMG) {
+                          e.currentTarget.src = DEFAULT_FALLBACK_IMG;
+                        }
+                      }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300" />
+                    <div className="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:scale-110">
+                      <Eye className="w-4 h-4" />
+                    </div>
+                    <div className="relative z-10 p-5 text-white">
+                      <span className="inline-block text-[10px] font-bold uppercase tracking-widest text-[#FDD229] mb-0.5">Wellness Integration</span>
+                      <h3 className="font-serif text-lg font-bold drop-shadow-md text-white">{g[4].caption}</h3>
+                    </div>
+                  </div>
+                )}
+
+                {g[5] && (
+                  <div 
+                    className="group relative overflow-hidden rounded-2xl bg-[#0F172A] cursor-pointer shadow-md hover:shadow-2xl hover:-translate-y-1 transition-all duration-500 border border-[#1E3A8A]/15 h-[225px] flex flex-col justify-end"
+                    onClick={() => setLightboxImg(g[5].url)}
+                  >
+                    <img
+                      src={g[5].url}
+                      alt={g[5].caption}
+                      className="absolute inset-0 w-full h-full object-cover group-hover:scale-108 transition-transform duration-1000 ease-out"
+                      onError={(e) => {
+                        if (e.currentTarget.src !== DEFAULT_FALLBACK_IMG) {
+                          e.currentTarget.src = DEFAULT_FALLBACK_IMG;
+                        }
+                      }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300" />
+                    <div className="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:scale-110">
+                      <Eye className="w-4 h-4" />
+                    </div>
+                    <div className="relative z-10 p-5 text-white">
+                      <span className="inline-block text-[10px] font-bold uppercase tracking-widest text-[#FDD229] mb-0.5">Soil Care</span>
+                      <h3 className="font-serif text-lg font-bold drop-shadow-md text-white">{g[5].caption}</h3>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════ 12. TRADITIONAL RECIPE SECTION (SEPARATE FULL SECTION) ═══════════ */}
+      {subData.recipes && subData.recipes.length > 0 && (
+        <section ref={s10.ref} id="recipe" className={`py-20 lg:py-28 ${darkSectionBg} border-t border-[#FDD229]/30 text-white relative overflow-hidden`}>
+          <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-[#FDD229]/15 via-transparent to-transparent" />
+
+          <div className="relative z-10 max-w-[1240px] mx-auto px-5">
+            {/* Section Header */}
+            <div className={`text-center max-w-2xl mx-auto mb-14 ${anim(s10.visible)}`}>
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FDD229]/20 text-[#FDD229] text-xs font-bold uppercase tracking-wider mb-3 border border-[#FDD229]/40">
+                <BarnRoofMotif color="#FDD229" height={12} />
+                <span>Traditional Recipe</span>
+              </div>
+              <h2 className="text-3xl sm:text-[40px] font-bold text-white" style={{ fontFamily: "'Poppins', sans-serif" }}>
+                {subData.recipes[0].title}
+              </h2>
+              <p className="text-base text-white/70 mt-2">
+                Traditional culinary preparation for authentic taste and maximum nutritional harmony.
+              </p>
+            </div>
+
+            {/* Two-Column Grid: Recipe Details Left + Large Image Showcase Right */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+              
+              {/* Left Column: Ingredients & Preparation */}
+              <div className={`lg:col-span-7 space-y-6 ${anim(s10.visible, 'left')}`}>
+                <div className="p-7 bg-white/10 backdrop-blur-md rounded-2xl border border-white/15 shadow-xl space-y-6">
+                  <div>
+                    <h3 className="text-xs font-bold uppercase tracking-[2px] mb-4 text-[#FDD229] flex items-center gap-2">
+                      <Award className="w-4 h-4 text-[#FDD229]" />
+                      <span>Ingredients Required</span>
+                    </h3>
+                    <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {subData.recipes[0].ingredients.map((ing, i) => (
+                        <li key={i} className="flex items-center gap-2.5 text-base font-semibold text-white">
+                          <CheckCircle2 className="w-4.5 h-4.5 shrink-0 text-[#FDD229]" />
+                          <span>{ing}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div className="pt-6 border-t border-white/15">
+                    <h3 className="text-xs font-bold uppercase tracking-[2px] mb-3 text-[#FDD229]">
+                      Preparation Guide
+                    </h3>
+                    <p className="text-base sm:text-lg leading-relaxed text-white/90 font-normal">
+                      {subData.recipes[0].instructions}
+                    </p>
+                  </div>
                 </div>
               </div>
-            )}
+
+              {/* Right Column: Full Recipe Showcase Image */}
+              <div className={`lg:col-span-5 ${anim(s10.visible, 'right')}`}>
+                <div className="relative group overflow-hidden rounded-2xl bg-[#0F172A] shadow-2xl border-4 border-white/20 aspect-[4/3] sm:aspect-[14/11]">
+                  <img
+                    src={g[4]?.url || g[0]?.url || subData.heroImage}
+                    alt={subData.recipes[0].title}
+                    className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-1000 ease-out"
+                    onError={(e) => {
+                      if (e.currentTarget.src !== DEFAULT_FALLBACK_IMG) {
+                        e.currentTarget.src = DEFAULT_FALLBACK_IMG;
+                      }
+                    }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                  <div className="absolute bottom-5 left-5 right-5 text-white">
+                    <span className="inline-block text-[10px] font-bold uppercase tracking-widest text-[#FDD229] mb-1">Authentic Serving Suggestion</span>
+                    <h4 className="font-serif text-lg font-bold text-white drop-shadow-md">{subData.title} Infusion</h4>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ═══════════ 13. OPTIMAL DAILY USAGE SCHEDULE ═══════════ */}
+      <section id="usage" className={`py-20 lg:py-28 ${usageBg} relative overflow-hidden`}>
+        <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-[#1E3A8A]/10 via-transparent to-transparent" />
+
+        <div className="relative z-10 max-w-[1240px] mx-auto px-5">
+          {/* Section Header */}
+          <div className="text-center max-w-2xl mx-auto mb-14">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#1E3A8A]/10 text-[#1E3A8A] text-xs font-bold uppercase tracking-wider mb-3">
+              <BarnRoofMotif color={primaryColor} height={12} />
+              <span>Daily Protocol</span>
+            </div>
+            <h2 className="text-3xl sm:text-[40px] font-bold text-[#1E293B]" style={{ fontFamily: "'Poppins', sans-serif" }}>
+              Optimal Usage Schedule
+            </h2>
+            <p className="text-base text-[#64748B] mt-2">
+              Follow this daily timing protocol to maximize bio-absorbency and cellular vitality.
+            </p>
+          </div>
+
+          {/* Two-Column Grid: Large Usage Lifestyle Image Left + Protocol Steps Right */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+            
+            {/* Left Column: Full Lifestyle Usage Showcase Image */}
+            <div className="lg:col-span-5 order-2 lg:order-1">
+              <div className="relative group overflow-hidden rounded-2xl bg-[#0F172A] shadow-2xl border-4 border-white aspect-[4/3] sm:aspect-[14/11]">
+                <img
+                  src={g[3]?.url || g[1]?.url || subData.heroImage}
+                  alt="Daily Usage Protocol"
+                  className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-1000 ease-out"
+                  onError={(e) => {
+                    if (e.currentTarget.src !== DEFAULT_FALLBACK_IMG) {
+                      e.currentTarget.src = DEFAULT_FALLBACK_IMG;
+                    }
+                  }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                <div className="absolute bottom-5 left-5 right-5 text-white">
+                  <span className="inline-block text-[10px] font-bold uppercase tracking-widest text-[#FDD229] mb-1">Optimal Wellness Ritual</span>
+                  <h4 className="font-serif text-lg font-bold text-white drop-shadow-md">Daily Bio-Absorbency Routine</h4>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Column: Morning, Afternoon, Evening Cards */}
+            <div className="lg:col-span-7 space-y-4 order-1 lg:order-2">
+              {[
+                { icon: Sunrise, title: 'Morning Protocol', desc: 'Take on an empty stomach 20 minutes before breakfast with warm water for peak bioavailability.', color: '#FDD229' },
+                { icon: Sun, title: 'Afternoon Boost', desc: 'Add to your favorite smoothie, fresh juice, or herbal tea for steady non-jittery energy.', color: primaryColor },
+                { icon: Moon, title: 'Evening Recovery', desc: 'Mix into warm golden milk 45 minutes before sleep for deep restorative cellular recovery.', color: isSupplements ? '#162017' : '#0F172A' }
+              ].map(({ icon: Icon, title, desc, color }, i) => (
+                <div 
+                  key={i} 
+                  className="flex gap-5 items-start p-6 bg-white rounded-2xl border border-[#E2E8F0] shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 group"
+                >
+                  <div className="w-12 h-12 flex items-center justify-center shrink-0 rounded-xl shadow-md" style={{ backgroundColor: color }}>
+                    <Icon className={`w-5 h-5 ${color === '#FDD229' ? 'text-black' : 'text-white'}`} />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold mb-1 text-[#1E293B]" style={{ fontFamily: "'Poppins', sans-serif" }}>{title}</h3>
+                    <p className="text-base leading-relaxed text-[#334155]">{desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
           </div>
         </div>
       </section>
@@ -887,24 +940,24 @@ export const SubcategoryDetail: React.FC<SubcategoryDetailProps> = ({
       {/* ═══════════ 9 NEW BRAND TRUST SECTIONS ═══════════ */}
       <SubcategoryExtra9Sections subData={subData} />
 
-      {/* ═══════════ 13. CUSTOMER REVIEWS ═══════════ */}
-      <section ref={s11.ref} className="bg-[#FBFCFC]">
-        <div className="max-w-[1240px] mx-auto px-5 py-20 lg:py-28">
+      {/* ═══════════ 14. CUSTOMER REVIEWS ═══════════ */}
+      <section ref={s11.ref} className={`${reviewsBg} text-white py-20 lg:py-28 border-t border-white/10`}>
+        <div className="max-w-[1240px] mx-auto px-5">
           <div className={`text-center mb-14 ${anim(s11.visible)}`}>
             <span className="text-[11px] uppercase font-bold tracking-[3px] block mb-3 text-[#FDD229]">Customer Testimonials</span>
-            <h2 className="text-3xl sm:text-[38px] font-bold text-[#1E293B]" style={{ fontFamily: "'Poppins', sans-serif" }}>What Our Customers Say</h2>
+            <h2 className="text-3xl sm:text-[38px] font-bold text-white" style={{ fontFamily: "'Poppins', sans-serif" }}>What Our Customers Say</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {subData.reviews.map((rev, idx) => (
-              <div key={idx} className={`bg-[#FBFCFC] p-7 space-y-4 transition-all duration-300 hover:shadow-md ${anim(s11.visible)}`} style={{ borderRadius: '6px', border: '1px solid #E8E4DC', animationDelay: `${idx * 100}ms` }}>
+              <div key={idx} className={`bg-white/10 backdrop-blur-md p-7 space-y-4 transition-all duration-300 hover:bg-white/15 ${anim(s11.visible)}`} style={{ borderRadius: '12px', border: '1px solid rgba(255,255,255,0.15)', animationDelay: `${idx * 100}ms` }}>
                 <div className="flex items-center justify-between">
                   <div className="flex gap-0.5">{[...Array(rev.rating)].map((_, i) => <Star key={i} className="w-4 h-4 text-[#FDD229] fill-[#FDD229]" />)}</div>
-                  <span className="text-[10px] font-bold uppercase tracking-[1.5px] text-white px-2.5 py-1 bg-[#384E3C] rounded-xs">Verified</span>
+                  <span className="text-[10px] font-bold uppercase tracking-[1.5px] text-white px-2.5 py-1 bg-[#1E3A8A] rounded-xs border border-white/20">Verified</span>
                 </div>
-                <p className="text-base italic leading-relaxed text-[#334155]">"{rev.comment}"</p>
-                <div className="pt-3 text-sm flex justify-between border-t border-[#F0EDE7]">
-                  <span className="font-bold text-[#1E293B]">{rev.author}</span>
-                  <span className="text-[#64748B] font-medium">{rev.city} • {rev.date}</span>
+                <p className="text-base italic leading-relaxed text-white/90">"{rev.comment}"</p>
+                <div className="pt-3 text-sm flex justify-between border-t border-white/15">
+                  <span className="font-bold text-white">{rev.author}</span>
+                  <span className="text-white/60 font-medium">{rev.city} • {rev.date}</span>
                 </div>
               </div>
             ))}
@@ -912,7 +965,7 @@ export const SubcategoryDetail: React.FC<SubcategoryDetailProps> = ({
         </div>
       </section>
 
-      {/* ═══════════ 14. FAQ ACCORDION ═══════════ */}
+      {/* ═══════════ 15. FAQ ACCORDION ═══════════ */}
       <section ref={s12.ref} className="bg-[#FBFCFC]">
         <div className={`max-w-[800px] mx-auto px-5 py-20 lg:py-28 ${anim(s12.visible)}`}>
           <div className="text-center mb-12">
@@ -943,12 +996,12 @@ export const SubcategoryDetail: React.FC<SubcategoryDetailProps> = ({
         </div>
       </section>
 
-      {/* ═══════════ 15. BOTTOM CTA ═══════════ */}
-      <section className="relative overflow-hidden bg-[#384E3C]">
-        <div className="absolute inset-0 opacity-[0.06]"><img src={g[0]?.url || subData.heroImage} alt="" className="w-full h-full object-cover" /></div>
+      {/* ═══════════ 15. BOTTOM CTA — Full Width ═══════════ */}
+      <section className={`relative overflow-hidden ${bottomCtaBg} border-t-2 border-[#FDD229]/40`}>
+        <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#FDD229]/20 via-transparent to-transparent" />
         <div className="max-w-[800px] mx-auto px-5 py-20 lg:py-28 text-center relative z-10">
           <h2 className="text-3xl sm:text-4xl lg:text-[48px] font-bold text-white mb-5 leading-tight" style={{ fontFamily: "'Poppins', sans-serif" }}>Ready to Experience Pure {subData.title}?</h2>
-          <p className="text-sm mb-8 max-w-xl mx-auto" style={{ color: 'rgba(255,255,255,0.50)' }}>
+          <p className="text-sm mb-8 max-w-xl mx-auto" style={{ color: 'rgba(255,255,255,0.75)' }}>
             100% organic, PCSIR lab verified, sourced directly from {subData.origin}. Free delivery on orders above PKR 3,000.
           </p>
           <div className="flex flex-wrap gap-3 justify-center">
@@ -963,9 +1016,9 @@ export const SubcategoryDetail: React.FC<SubcategoryDetailProps> = ({
               </button>
             </Link>
           </div>
-          <div className="flex items-center justify-center gap-8 pt-10 text-xs" style={{ color: 'rgba(255,255,255,0.35)' }}>
-            <span className="flex items-center gap-1.5"><Phone className="w-3.5 h-3.5" /> +92-300-1234567</span>
-            <span className="flex items-center gap-1.5"><Mail className="w-3.5 h-3.5" /> info@barn.pk</span>
+          <div className="flex items-center justify-center gap-8 pt-10 text-xs" style={{ color: 'rgba(255,255,255,0.60)' }}>
+            <span className="flex items-center gap-1.5"><Phone className="w-3.5 h-3.5 text-[#FDD229]" /> +92-300-1234567</span>
+            <span className="flex items-center gap-1.5"><Mail className="w-3.5 h-3.5 text-[#FDD229]" /> info@barn.pk</span>
           </div>
         </div>
       </section>

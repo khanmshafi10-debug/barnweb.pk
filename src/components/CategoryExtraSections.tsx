@@ -156,13 +156,18 @@ export const CategoryExtraSections: React.FC<CategoryExtraSectionsProps> = ({ ca
     visible: { transition: { staggerChildren: 0.12 } }
   };
 
+  const isGreen = categoryKey === 'supplements';
+  const accentColor = isGreen ? '#384E3C' : '#1E3A8A';
+  const darkBg = isGreen ? 'bg-[#162017]' : 'bg-[#0F172A]';
+  const stepBadgeBg = isGreen ? 'bg-[#384E3C]' : 'bg-[#1E3A8A]';
+
   return (
     <div className="space-y-0 text-[#2A2A2A]">
 
       {/* ════════════════════════════════════════════════════════════
           1. TERROIR & MOUNTAIN SOURCING HERITAGE SHOWCASE
       ════════════════════════════════════════════════════════════ */}
-      <section className="py-20 lg:py-28 bg-[#FBF9F4] border-t border-[#2D4233]/10 relative overflow-hidden">
+      <section className="py-20 lg:py-28 bg-[#FBF9F4] border-t border-black/10 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div 
             className="text-center max-w-3xl mx-auto space-y-4 mb-16"
@@ -171,8 +176,8 @@ export const CategoryExtraSections: React.FC<CategoryExtraSectionsProps> = ({ ca
             viewport={{ once: true }}
             variants={cinematicReveal}
           >
-            <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-[#2D4233]/10 text-[#2D4233] text-xs font-bold uppercase tracking-widest">
-              <BarnRoofMotif color="#2D4233" height={14} />
+            <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest shadow-2xs" style={{ backgroundColor: `${accentColor}15`, color: accentColor }}>
+              <BarnRoofMotif color={accentColor} height={14} />
               <span>Pure Origin Terroir</span>
             </div>
             <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-[#1C241D]">
@@ -195,7 +200,7 @@ export const CategoryExtraSections: React.FC<CategoryExtraSectionsProps> = ({ ca
               whileHover={{ scale: 1.03, y: -6, transition: { duration: 0.3 } }}
               className="bg-[#FBF9F4] p-8 rounded-3xl border border-[#E2E8F0] shadow-[0_15px_35px_rgba(0,0,0,0.06)] hover:shadow-2xl transition-all duration-300 space-y-4"
             >
-              <div className="w-14 h-14 rounded-2xl bg-[#2D4233]/10 text-[#2D4233] flex items-center justify-center shadow-inner">
+              <div className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-inner" style={{ backgroundColor: `${accentColor}15`, color: accentColor }}>
                 <MapPin className="w-7 h-7" />
               </div>
               <h3 className="font-serif text-xl font-bold text-[#1C241D]">Glacier Escarpment Origin</h3>
@@ -203,7 +208,7 @@ export const CategoryExtraSections: React.FC<CategoryExtraSectionsProps> = ({ ca
                 Harvested exclusively in {data.origin} at high altitude micro-climates ({data.elevation}).
               </p>
               <div className="pt-2 text-sm font-bold text-[#B58600] flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-[#2D4233]" /> 100% Traceable Terroir
+                <CheckCircle2 className="w-4 h-4" style={{ color: accentColor }} /> 100% Traceable Terroir
               </div>
             </motion.div>
 
@@ -220,7 +225,7 @@ export const CategoryExtraSections: React.FC<CategoryExtraSectionsProps> = ({ ca
                 {data.harvestSeason}. Gathered only when nature permits peak bio-active compound density.
               </p>
               <div className="pt-2 text-sm font-bold text-[#B58600] flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-[#2D4233]" /> Limited Batch Harvest
+                <CheckCircle2 className="w-4 h-4" style={{ color: accentColor }} /> Limited Batch Harvest
               </div>
             </motion.div>
 
@@ -229,7 +234,7 @@ export const CategoryExtraSections: React.FC<CategoryExtraSectionsProps> = ({ ca
               whileHover={{ scale: 1.03, y: -6, transition: { duration: 0.3 } }}
               className="bg-[#FBF9F4] p-8 rounded-3xl border border-[#E2E8F0] shadow-[0_15px_35px_rgba(0,0,0,0.06)] hover:shadow-2xl transition-all duration-300 space-y-4"
             >
-              <div className="w-14 h-14 rounded-2xl bg-[#2D4233]/10 text-[#2D4233] flex items-center justify-center shadow-inner">
+              <div className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-inner" style={{ backgroundColor: `${accentColor}15`, color: accentColor }}>
                 <ShieldCheck className="w-7 h-7" />
               </div>
               <h3 className="font-serif text-xl font-bold text-[#1C241D]">Curing & Extraction Method</h3>
@@ -237,7 +242,7 @@ export const CategoryExtraSections: React.FC<CategoryExtraSectionsProps> = ({ ca
                 {data.curingDays} using {data.fermentType} to protect natural enzymes.
               </p>
               <div className="pt-2 text-sm font-bold text-[#B58600] flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-[#2D4233]" /> Zero Chemical Solvents
+                <CheckCircle2 className="w-4 h-4" style={{ color: accentColor }} /> Zero Chemical Solvents
               </div>
             </motion.div>
           </motion.div>
@@ -248,7 +253,7 @@ export const CategoryExtraSections: React.FC<CategoryExtraSectionsProps> = ({ ca
       {/* ════════════════════════════════════════════════════════════
           2. ACTIVE NUTRITIONAL & BIO-COMPOUND BREAKDOWN
       ════════════════════════════════════════════════════════════ */}
-      <section className="py-20 lg:py-28 bg-[#162017] text-white relative overflow-hidden">
+      <section className={`py-20 lg:py-28 ${darkBg} text-white relative overflow-hidden`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           
           <motion.div 
@@ -306,7 +311,7 @@ export const CategoryExtraSections: React.FC<CategoryExtraSectionsProps> = ({ ca
             viewport={{ once: true }}
             variants={cinematicReveal}
           >
-            <span className="text-xs font-bold uppercase tracking-widest text-[#2D4233]">Heritage Method</span>
+            <span className="text-xs font-bold uppercase tracking-widest" style={{ color: accentColor }}>Heritage Method</span>
             <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-[#1C241D]">
               Traditional 4-Step Harvest & Processing
             </h2>
@@ -329,7 +334,7 @@ export const CategoryExtraSections: React.FC<CategoryExtraSectionsProps> = ({ ca
                 whileHover={{ scale: 1.03, y: -5, transition: { duration: 0.25 } }}
                 className="bg-white p-7 rounded-2xl border border-[#E2E8F0] shadow-2xs hover:shadow-xl transition-all duration-300 space-y-4"
               >
-                <div className="w-12 h-12 rounded-2xl bg-[#2D4233] text-[#FDD229] flex items-center justify-center font-bold text-lg font-serif shadow-md">
+                <div className={`w-12 h-12 rounded-2xl ${stepBadgeBg} text-[#FDD229] flex items-center justify-center font-bold text-lg font-serif shadow-md`}>
                   {p.step}
                 </div>
                 <h3 className="font-serif text-xl font-bold text-[#1C241D]">{p.title}</h3>

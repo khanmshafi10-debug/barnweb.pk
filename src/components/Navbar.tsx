@@ -112,24 +112,6 @@ export const Navbar: React.FC<NavbarProps> = ({
         image: 'https://images.pexels.com/photos/4199094/pexels-photo-4199094.jpeg?auto=compress&cs=tinysrgb&w=300',
         path: '/sub/mango'
       }
-    },
-    nuts: {
-      title: 'Hunza Mountain Dry Fruits & Nuts',
-      description: 'Paper-shell walnuts, roasted Gilgit pistachios, and Quetta sweet almonds.',
-      path: '/nuts',
-      subcategories: [
-        { name: 'Hunza Walnuts (Akhrot)', path: '/sub/walnut', desc: 'Paper-shell halves rich in Omega-3' },
-        { name: 'Gilgit Pistachios (Pista)', path: '/sub/pista', desc: 'Jumbo pistachios with pink salt' },
-        { name: 'Quetta Almonds (Badam)', path: '/sub/almond', desc: 'Raw sweet almonds for brain health' },
-        { name: 'Kashmir Pine Nuts (Chilgoza)', path: '/sub/chilgoza', desc: 'Wild harvested butter-soft pine nuts' },
-      ],
-      featured: {
-        name: 'Hunza Valley Raw Organic Walnuts',
-        tag: 'Paper Shell',
-        price: 'Rs. 7,840',
-        image: 'https://images.pexels.com/photos/4041392/pexels-photo-4041392.jpeg?auto=compress&cs=tinysrgb&w=300',
-        path: '/sub/walnut'
-      }
     }
   };
 
@@ -138,16 +120,14 @@ export const Navbar: React.FC<NavbarProps> = ({
     { name: 'Supplements', path: '/supplements', hasMega: true, key: 'supplements' },
     { name: 'Spices', path: '/spices', hasMega: true, key: 'spices' },
     { name: 'Pickles', path: '/pickles', hasMega: true, key: 'pickles' },
-    { name: 'Nuts', path: '/nuts', hasMega: true, key: 'nuts' },
     { name: 'Routine Quiz', path: '/quiz' },
-    { name: 'Lab Reports', path: '/certifications' },
+    { name: 'About Us', path: '/about' },
   ];
 
   const categories = [
     { name: 'Supplements', path: '/supplements' },
     { name: 'Spices', path: '/spices' },
     { name: 'Pickles', path: '/pickles' },
-    { name: 'Nuts & Dry Fruits', path: '/nuts' },
     { name: 'Sidr Honey', path: '/shop?category=grown' },
     { name: 'Skardu Shilajit', path: '/sub/shilajit' },
     { name: 'Rosemary Hair Care', path: '/shop?category=oils' }
@@ -167,8 +147,8 @@ export const Navbar: React.FC<NavbarProps> = ({
       <header
         className={`sticky top-0 z-40 transition-all duration-300 ${
           isScrolled
-            ? 'bg-[#FBF9F4]/98 backdrop-blur-md shadow-md border-b border-[#2D4233]/15 py-2'
-            : 'bg-[#FBF9F4] py-3 border-b border-[#2D4233]/10'
+            ? 'bg-[#FBF9F4]/98 backdrop-blur-md shadow-md border-b border-[#1E3A8A]/15 py-2'
+            : 'bg-[#FBF9F4] py-3 border-b border-[#1E3A8A]/10'
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-2 xl:gap-4">
@@ -177,21 +157,21 @@ export const Navbar: React.FC<NavbarProps> = ({
           <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 rounded-xl text-[#1C241D] hover:bg-[#2D4233]/10 transition-colors"
+              className="lg:hidden p-2 rounded-xl text-[#1C241D] hover:bg-[#1E3A8A]/10 transition-colors"
               aria-label="Toggle navigation menu"
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
 
             <Link to="/" className="group flex items-center gap-2 focus:outline-none shrink-0">
-              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#384E3C] text-[#FBFCFC] flex items-center justify-center transition-transform group-hover:scale-105 shadow-sm">
+              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#1E3A8A] text-[#FBFCFC] flex items-center justify-center transition-transform group-hover:scale-105 shadow-sm">
                 <BarnRoofMotif color="#FBFCFC" height={16} />
               </div>
               <div className="flex flex-col">
-                <span className="font-serif text-lg sm:text-xl font-bold tracking-tight text-[#2B2E2C] leading-none group-hover:text-[#384E3C] transition-colors">
+                <span className="font-serif text-lg sm:text-xl font-bold tracking-tight text-[#2B2E2C] leading-none group-hover:text-[#1E3A8A] transition-colors">
                   Barn<span className="text-[#FDD229]">.pk</span>
                 </span>
-                <span className="text-[8px] sm:text-[9px] tracking-wider uppercase font-bold text-[#384E3C] mt-0.5 whitespace-nowrap">
+                <span className="text-[8px] sm:text-[9px] tracking-wider uppercase font-bold text-[#1E3A8A] mt-0.5 whitespace-nowrap">
                   Chiltan Organic Foods
                 </span>
               </div>
@@ -213,8 +193,8 @@ export const Navbar: React.FC<NavbarProps> = ({
                     to={link.path}
                     className={`px-2.5 xl:px-3 py-1.5 rounded-lg text-xs xl:text-sm font-semibold whitespace-nowrap transition-all flex items-center gap-1 ${
                       active
-                        ? 'text-[#384E3C] bg-[#384E3C]/10 font-bold'
-                        : 'text-[#2B2E2C]/85 hover:text-[#384E3C] hover:bg-[#384E3C]/5'
+                        ? 'text-[#1E3A8A] bg-[#1E3A8A]/10 font-bold'
+                        : 'text-[#2B2E2C]/85 hover:text-[#1E3A8A] hover:bg-[#1E3A8A]/5'
                     }`}
                   >
                     {link.name}
@@ -231,17 +211,17 @@ export const Navbar: React.FC<NavbarProps> = ({
             {/* Compact Search Trigger */}
             <button
               onClick={onOpenSearch}
-              className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium text-[#2B2E2C]/80 bg-white border border-[#384E3C]/20 hover:border-[#FDD229] transition-all shadow-2xs whitespace-nowrap"
+              className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium text-[#2B2E2C]/80 bg-white border border-[#1E3A8A]/20 hover:border-[#FDD229] transition-all shadow-2xs whitespace-nowrap"
               title="Search remedies..."
             >
-              <Search className="w-3.5 h-3.5 text-[#384E3C] shrink-0" />
+              <Search className="w-3.5 h-3.5 text-[#1E3A8A] shrink-0" />
               <span className="hidden 2xl:inline text-[11px]">Search remedies...</span>
             </button>
 
             {/* Compact AI Advisor Button */}
             <button
               onClick={onOpenAi}
-              className="flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] sm:text-xs font-bold text-white bg-[#384E3C] hover:bg-[#2D3E30] transition-all shadow-xs whitespace-nowrap shrink-0 border border-[#FDD229]/40"
+              className="flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] sm:text-xs font-bold text-white bg-[#1E3A8A] hover:bg-[#172554] transition-all shadow-xs whitespace-nowrap shrink-0 border border-[#FDD229]/40"
               title="Ask Barn & Chiltan AI Advisor"
             >
               <Sparkles className="w-3.5 h-3.5 text-[#FDD229] shrink-0 animate-pulse" />
@@ -251,7 +231,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             {/* Wishlist Button */}
             <Link
               to="/wishlist"
-              className="p-1.5 sm:p-2 rounded-full text-[#2B2E2C]/80 hover:text-[#384E3C] hover:bg-[#384E3C]/10 transition-colors relative shrink-0"
+              className="p-1.5 sm:p-2 rounded-full text-[#2B2E2C]/80 hover:text-[#1E3A8A] hover:bg-[#1E3A8A]/10 transition-colors relative shrink-0"
               title="Wishlist"
             >
               <Heart className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -265,7 +245,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             {/* Compact Shopping Cart Button */}
             <button
               onClick={onOpenCart}
-              className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#384E3C] text-[#FBFCFC] hover:bg-[#2B3B2E] transition-colors shadow-xs group shrink-0"
+              className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#1E3A8A] text-[#FBFCFC] hover:bg-[#172554] transition-colors shadow-xs group shrink-0"
               aria-label="Open Shopping Cart"
             >
               <ShoppingBag className="w-3.5 h-3.5 text-[#FDD229] group-hover:scale-110 transition-transform shrink-0" />

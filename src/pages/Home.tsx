@@ -7,6 +7,7 @@ import { TestimonialsSection } from '../components/TestimonialsSection';
 import { FAQAccordion } from '../components/FAQAccordion';
 import { BundleBuilder } from '../components/BundleBuilder';
 import { ChiltanCategoryGrid } from '../components/ChiltanCategoryGrid';
+import { HomeNew6Sections } from '../components/HomeNew6Sections';
 import { PRODUCTS } from '../data/products';
 import { Product } from '../types';
 import { Link } from 'react-router-dom';
@@ -129,6 +130,9 @@ export const Home: React.FC<HomeProps> = ({
           <BundleBuilder onAddToCart={onAddToCart} />
         </div>
       </section>
+
+      {/* 7. NEW INTERNATIONAL WELLNESS BRAND SECTIONS */}
+      <HomeNew6Sections />
 
       {/* 7. "Grown" Feature Block */}
       <SectionBlock type="grown" />

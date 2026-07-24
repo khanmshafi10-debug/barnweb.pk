@@ -27,14 +27,14 @@ export const Button: React.FC<ButtonProps> = ({
   };
 
   const variantStyles = {
-    'primary-grown': 'bg-[#384E3C] text-[#FBFCFC] hover:bg-[#293B2D] shadow-md hover:shadow-xl hover:shadow-[#384E3C]/20 hover:-translate-y-0.5 btn-premium-green',
+    'primary-grown': 'bg-[#1E3A8A] text-[#FBFCFC] hover:bg-[#172554] shadow-md hover:shadow-xl hover:shadow-[#1E3A8A]/20 hover:-translate-y-0.5 btn-premium-green',
     'primary-restored': 'bg-[#483D8B] text-[#FBFCFC] hover:bg-[#3B3076] shadow-md hover:shadow-xl hover:shadow-[#483D8B]/30 hover:-translate-y-0.5',
     'gold': 'bg-[#FDD229] text-[#1E293B] hover:bg-[#FFE066] shadow-md hover:shadow-xl hover:shadow-[#FDD229]/40 hover:-translate-y-0.5 btn-premium-gold',
     'premium-gold': 'btn-premium-gold',
     'premium-green': 'btn-premium-green',
     'premium-outline': 'btn-premium-outline',
-    'outline': 'border-2 border-[#384E3C] text-[#384E3C] bg-transparent hover:bg-[#384E3C] hover:text-[#FBFCFC] hover:-translate-y-0.5',
-    'ghost': 'text-[#232924] hover:bg-[#384E3C]/10',
+    'outline': 'border-2 border-[#1E3A8A] text-[#1E3A8A] bg-transparent hover:bg-[#1E3A8A] hover:text-[#FBFCFC] hover:-translate-y-0.5',
+    'ghost': 'text-[#232924] hover:bg-[#1E3A8A]/10',
   };
 
   return (
