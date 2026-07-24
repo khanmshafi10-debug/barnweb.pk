@@ -8,6 +8,7 @@ import { BarnRoofMotif } from '../components/BarnRoofMotif';
 import { Product } from '../types';
 import { CheckCircle2, ArrowRight, ChevronRight, ChevronDown, Star, Sun, Moon, Sunrise, Truck, Package, RotateCcw, Zap, Heart, Target, TrendingUp, FlaskConical, ShieldCheck, Award, X, Phone, Mail } from 'lucide-react';
 import { CategoryExtraSections } from '../components/CategoryExtraSections';
+import { SubcategoryExtra9Sections } from '../components/SubcategoryExtra9Sections';
 
 /* ── Scroll-triggered animation hook ── */
 function useInView(threshold = 0.12) {
@@ -733,6 +734,9 @@ export const SubcategoryDetail: React.FC<SubcategoryDetailProps> = ({
           </div>
         </div>
       </section>
+
+      {/* ═══════════ 9 NEW BRAND TRUST SECTIONS ═══════════ */}
+      <SubcategoryExtra9Sections subData={subData} />
 
       {/* ═══════════ 13. CUSTOMER REVIEWS ═══════════ */}
       <section ref={s11.ref} className="bg-[#FBFCFC]">
